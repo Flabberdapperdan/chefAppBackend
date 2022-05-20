@@ -27,8 +27,13 @@ public class RecipeEndpoint {
     public List<Recipe> createNewRecipe(@RequestBody Recipe recipe) {
         service.createOne(recipe);
         return Arrays.asList(recipe);
+    }
+    @DeleteMapping("deleteRecipe/{id}")
+    public void deleteRecipeById(@PathVariable("id")long id) {
+    	service.deleteOne(id);
+	}
+    	
+   
 
-    
 
-}
 }

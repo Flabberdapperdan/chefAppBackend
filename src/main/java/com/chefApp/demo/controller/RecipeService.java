@@ -19,11 +19,8 @@ public class RecipeService {
     public void createOne(Recipe recipe) {
         r.save(recipe);
         
-    }
-    public Recipe safeOne(Recipe recipe) {
-        return recipe;
-
     }    
+    
     public void deleteOne(long id) {
         r.deleteById(id);    
     }
