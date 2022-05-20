@@ -2,7 +2,6 @@ package com.chefApp.demo.rest;
 
 import com.chefApp.demo.controller.RecipeService;
 import com.chefApp.demo.model.Recipe;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +14,11 @@ public class RecipeEndpoint {
 
     @Autowired
     RecipeService service;
-    @Autowired
+ 
     
 
     @GetMapping("recipe/{id}")
-    public Recipe getRecipeById(@PathVariable("id") int id) {
+    public Recipe getRecipeById(@PathVariable("id") long id) {
         Recipe foundRecipe = service.getOne(id).get();
         return foundRecipe;
     }
