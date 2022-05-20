@@ -1,11 +1,7 @@
 package com.chefApp.demo.rest;
 
 import com.chefApp.demo.controller.RecipeService;
-import com.chefApp.demo.model.Ingredient;
 import com.chefApp.demo.model.Recipe;
-
-import mei.overmorgen.def.domein.Recept;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +14,6 @@ public class RecipeEndpoint {
 
     @Autowired
     RecipeService service;
-    @Autowired
-    
 
     @GetMapping("getAllRecipes")
     public List<Recipe> firstGet() {
@@ -31,16 +25,7 @@ public class RecipeEndpoint {
     }
 
     @PostMapping("createRecipe")
-    @PostMapping("postmetobject")
-	public void groen(@RequestBody Recipe r) {
-        System.out.println("hij post het nog eenkeer!"+ r.getName());
-        service.save(r);
-    
-//    public List<Recipe> createNewRecipe() {
-//    	System.out.println("post recipe");
-//        Recipe recipe = new Recipe();
-//        recipe.setId(1);
-//        recipe.setName("hamburgertje");
-//        return Arrays.asList(recipe);
-//    }
+    public void createRecipe(@RequestBody Recipe recipe) {
+
+    }
 }
