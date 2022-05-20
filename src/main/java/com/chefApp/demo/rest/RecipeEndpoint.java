@@ -15,17 +15,17 @@ public class RecipeEndpoint {
     @Autowired
     RecipeService service;
 
-    @GetMapping("getAll")
+    @GetMapping("getAllRecipes")
     public List<Recipe> firstGet() {
         System.out.println("the first get is here");
         Recipe r = new Recipe();
         r.setId(1);
-        r.setName("boerenkool");
+        r.setName("pasta");
         r.setWeight(100);
         return Arrays.asList(r);
     }
 
-    @PostMapping("create")
+    @PostMapping("createRecipe")
     public void createRecipe(@RequestBody Recipe recipe) {
 
     }
