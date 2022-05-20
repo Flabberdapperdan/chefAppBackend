@@ -15,18 +15,17 @@ public class RecipeEndpoint {
     @Autowired
     RecipeService service;
 
-    @GetMapping("getAllRecipes")
-    public List<Recipe> firstGet() {
-        System.out.println("the first get is here");
-        Recipe r = new Recipe();
-        r.setId(1);
-        r.setName("pasta");
-        r.setWeight(100);
-        return Arrays.asList(r);
+    @GetMapping("recipe/{id}")
+    public Recipe getRecipeById(@PathVariable("id") int id) {
+        Recipe foundRecipe = service.getOne(id).get();
+        return foundRecipe;
     }
 
     @PostMapping("createRecipe")
-    public void createRecipe(@RequestBody Recipe recipe) {
-
-    }
+    public List<Recipe> createNewIngredient(@RequestBody Recipe recipe) {
+        service.createOne(recipe);
+        return Arrays.asList(recipe);
 }
+
+}
+
