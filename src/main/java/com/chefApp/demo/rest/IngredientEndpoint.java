@@ -1,16 +1,12 @@
 package com.chefApp.demo.rest;
 
 import com.chefApp.demo.controller.IngredientService;
-import com.chefApp.demo.controller.RecipeService;
 import com.chefApp.demo.model.Ingredient;
-import com.chefApp.demo.model.Recipe;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class IngredientEndpoint {
@@ -22,6 +18,12 @@ public class IngredientEndpoint {
     public Ingredient getIngredientById(@PathVariable("id") int id) {
         Ingredient foundIngredient = service.getOne(id).get();
         return foundIngredient;
+    }
+
+    @GetMapping("allIngredients")
+    public List<Ingredient> getAllIngredients() {
+        List<Ingredient> allIngredients = service.getAll();
+        return allIngredients;
     }
 
     @PostMapping("createIngredient")
