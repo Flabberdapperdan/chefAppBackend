@@ -1,35 +1,32 @@
 package com.chefApp.demo.rest;
 
+import com.chefApp.demo.controller.IngredientService;
 import com.chefApp.demo.controller.RecipeService;
 import com.chefApp.demo.model.Ingredient;
 import com.chefApp.demo.model.Recipe;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class IngredientEndpoint {
 
     @Autowired
-    RecipeService service;
+    IngredientService service;
 
     @GetMapping("ingredient/{id}")
-    public void getIngredientById(@PathVariable("id") int id) {
-
-
+    public Ingredient getIngredientById(@PathVariable("id") int id) {
+        Ingredient foundIngredient = service.getOne(id).get();
+        return foundIngredient;
     }
 
-    @PostMapping("ingredient")
-    public List<Ingredient> createNewIngredient() {
-        System.out.println("post ingredient");
-        Ingredient ingredient = new Ingredient();
-        ingredient.setId(1);
-        ingredient.setName("boerenkool");
+    @PostMapping("createIngredient")
+    public List<Ingredient> createNewIngredient(@RequestBody Ingredient ingredient) {
+        service.createOne(ingredient);
         return Arrays.asList(ingredient);
     }
 }
