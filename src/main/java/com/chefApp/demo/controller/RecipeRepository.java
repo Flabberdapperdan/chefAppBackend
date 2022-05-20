@@ -1,4 +1,4 @@
-package controller;
+package com.chefApp.demo.controller;
 
 import org.springframework.stereotype.Component;
 

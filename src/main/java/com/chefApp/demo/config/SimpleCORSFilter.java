@@ -1,4 +1,4 @@
-package config;
+package com.chefApp.demo.config;
 
 import org.springframework.stereotype.Component;
 
