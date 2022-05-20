@@ -4,13 +4,17 @@ import com.chefApp.demo.model.Ingredient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.parser.Entity;
+import java.util.Optional;
+
 @Service
 public class IngredientService {
     @Autowired
     IngredientRepository r;
 
-    public void getOne(int id) {
-        Ingredient foundIngredient = r.findById(id);
+    public Optional<Ingredient> getOne(long id) {
+        Optional<Ingredient> foundIngredient = r.findById(id);
+        return foundIngredient;
     }
 
     public void createOne(Ingredient ingredient) {
