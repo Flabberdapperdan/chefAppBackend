@@ -1,11 +1,10 @@
-package rest;
+package com.chefApp.demo.rest;
 
-import controller.RecipeService;
-import model.Recipe;
+import com.chefApp.demo.controller.RecipeService;
+import com.chefApp.demo.model.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
