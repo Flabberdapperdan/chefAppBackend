@@ -15,7 +15,7 @@ public class IngredientEndpoint {
     IngredientService service;
 
     @GetMapping("ingredient/{id}")
-    public Ingredient getIngredientById(@PathVariable("id") int id) {
+    public Ingredient getIngredientById(@PathVariable("id") long id) {
         Ingredient foundIngredient = service.getOne(id).get();
         return foundIngredient;
     }
@@ -30,5 +30,10 @@ public class IngredientEndpoint {
     public List<Ingredient> createNewIngredient(@RequestBody Ingredient ingredient) {
         service.createOne(ingredient);
         return Arrays.asList(ingredient);
+    }
+
+    @DeleteMapping("deleteIngredient/{id}")
+    public void deleteIngredientById(@PathVariable("id") long id) {
+        service.deleteOne(id);
     }
 }

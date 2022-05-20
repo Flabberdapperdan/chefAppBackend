@@ -25,4 +25,8 @@ public class IngredientService {
     public void createOne(Ingredient ingredient) {
         r.save(ingredient);
     }
+
+    public void deleteOne(long id) {
+        r.deleteById(id);
+    }
 }
