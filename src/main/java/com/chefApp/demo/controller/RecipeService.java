@@ -10,13 +10,21 @@ public class RecipeService {
     @Autowired
     RecipeRepository r;
 
+
     public Optional<Recipe> getOne(long id){
     	Optional<Recipe> foundRecipe = r.findById(id);
     	return foundRecipe;
     }
-    public void createOne(Recipe recipe) {
-    	r.save(recipe);
-    	
-    }    
     
+    public void createOne(Recipe recipe) {
+        r.save(recipe);
+        
+    }
+    public Recipe safeOne(Recipe recipe) {
+        return recipe;
+
+    }    
+    public void deleteOne(long id) {
+        r.deleteById(id);    
+    }
 }
