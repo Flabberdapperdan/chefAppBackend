@@ -11,6 +11,7 @@ public class Recipe {
 		@Id
         @GeneratedValue ( strategy = GenerationType.AUTO )
         long id;
+		String name;
         public long getId() {
 			return id;
 		}
@@ -23,6 +24,4 @@ public class Recipe {
 		public void setName(String name) {
 			this.name = name;
 		}
-		String name;
-
 }

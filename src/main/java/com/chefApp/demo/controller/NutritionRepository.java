@@ -1,9 +1,12 @@
 package com.chefApp.demo.controller;
 
-import com.chefApp.demo.model.Recipe;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
+import com.chefApp.demo.model.Nutrition;
+
+
 @Component
-public interface RecipeRepository extends JpaRepository<Recipe, Long> {
+public interface NutritionRepository extends JpaRepository<Nutrition, Long> {
 }
+
