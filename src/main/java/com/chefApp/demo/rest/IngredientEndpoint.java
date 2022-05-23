@@ -51,10 +51,15 @@ public class IngredientEndpoint {
     @DeleteMapping("{id}")
     public ResponseEntity deleteIngredientById(@PathVariable("id") long id) {
         if (id >= 0) {
-            service.deleteOne(id);
-            return new ResponseEntity(HttpStatus.ACCEPTED);
+            Optional<Ingredient> exists = service.getOne(id);
+            if (exists.isPresent()) {
+                service.deleteOne(id);
+                return new ResponseEntity(HttpStatus.ACCEPTED);
+            } else {
+                return new ResponseEntity(HttpStatus.NO_CONTENT);
+            }
         } else {
-            return new ResponseEntity(HttpStatus.CONFLICT);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utilities.ValidationException;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,13 +13,13 @@ public class IngredientService {
     @Autowired
     IngredientRepository r;
 
+    public List<Ingredient> getAll() {
+        return r.findAll();
+    }
+
     public Optional<Ingredient> getOne(long id) {
         Optional<Ingredient> foundIngredient = r.findById(id);
         return foundIngredient;
-    }
-
-    public List<Ingredient> getAll() {
-        return r.findAll();
     }
 
     public Ingredient createOne(Ingredient ingredient) {
