@@ -7,11 +7,9 @@ public class App {
 	public static void main(String[] args) {
 
 		Ingredient i = new Ingredient();
-//		i.cost = -3;
+//		i.cost = -3; // Dit willen we dus niet!
 		i.setCost(-3);
 		
 		System.out.println(i.getCost());
-
 	}
-
 }

@@ -8,7 +8,7 @@ import javax.persistence.Id;
 
 @Entity
 public class Ingredient {
-	
+
     // primary key    AutoIncrement
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO)

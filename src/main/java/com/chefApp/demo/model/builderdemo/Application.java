@@ -11,7 +11,6 @@ public class Application {
 		stringBuilder.append(45);
 		stringBuilder.append(true);
 		stringBuilder.append('R');
-		
 		stringBuilder.reverse();
 		
 		String label = stringBuilder.toString();

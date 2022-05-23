@@ -7,6 +7,6 @@ import com.chefApp.demo.model.singletondemo.Chef;
 public class Application {
 	
 	public static void main(String[] args) {
-		Ingredient i = IngredientFactory.getIngredient("sla");
+		Ingredient ingredient = IngredientFactory.getIngredient("sla");
 	}
 }

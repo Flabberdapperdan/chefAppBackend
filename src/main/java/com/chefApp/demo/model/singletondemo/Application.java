@@ -10,7 +10,7 @@ public class Application {
 		Chef d = Chef.getInstance();
 		Chef e = Chef.getInstance();
 		
-//		Chef d = new Chef();// vout 
+//		Chef d = new Chef();// vout want dit willen we dus voorkomen met Singleton pattern
 		
 		
 		System.out.println(c);

@@ -11,8 +11,7 @@ public class Chef {
 		
 		return chef;
 	}
-	
-	
+		
 	// using the Singleton pattern
 	private Chef() {
 		

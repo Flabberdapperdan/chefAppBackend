@@ -13,8 +13,6 @@ public class IngredientFactory {
 			return sla;
 		} else {
 			if("kippenpoot".equals(type)) {
-				
-				
 				Kippenpoot result = new KippenpootBuilder("Tokkie")
 						.metKosten(5)
 						.metGewicht(30)
@@ -22,11 +20,9 @@ public class IngredientFactory {
 						.build();
 				
 				return result;
-				
 			}
 		}
 		
 		return null; // foei
 	}
-
 }
