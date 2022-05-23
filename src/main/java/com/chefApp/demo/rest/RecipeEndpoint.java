@@ -14,18 +14,26 @@ public class RecipeEndpoint {
 
     @Autowired
     RecipeService service;
+ 
+    
 
-    @GetMapping("getAllRecipes")
-    public List<Recipe> firstGet() {
-        System.out.println("the first get is here");
-        Recipe r = new Recipe();
-        r.setId(1);
-        r.setName("pasta");
-        return Arrays.asList(r);
+    @GetMapping("recipe/{id}")
+    public Recipe getRecipeById(@PathVariable("id") long id) {
+        Recipe foundRecipe = service.getOne(id).get();
+        return foundRecipe;
     }
 
     @PostMapping("createRecipe")
-    public void createRecipe(@RequestBody Recipe recipe) {
-
+    public List<Recipe> createNewRecipe(@RequestBody Recipe recipe) {
+        service.createOne(recipe);
+        return Arrays.asList(recipe);
     }
+    @DeleteMapping("deleteRecipe/{id}")
+    public void deleteRecipeById(@PathVariable("id")long id) {
+    	service.deleteOne(id);
+	}
+    	
+   
+
+
 }
