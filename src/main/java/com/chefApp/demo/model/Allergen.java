@@ -7,24 +7,26 @@ import javax.persistence.Id;
 
 @Entity
 public class Allergen {
+
 	@Id
-	@GeneratedValue( strategy = GenerationType.AUTO)
-	long id;
-	String Name;
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // Soms gaat AUTO fout. Bijvoorbeeld bij DB2. Maar dat zal zo'n vaart nog niet lopen. 
+	private long id;
+
+	private String name;
+
 	public long getId() {
 		return id;
 	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
+
 	public String getName() {
-		return Name;
+		return name;
 	}
+
 	public void setName(String name) {
-		Name = name;
+		this.name = name;
 	}
-
-	
-	
-
 }
