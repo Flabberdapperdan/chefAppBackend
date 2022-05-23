@@ -1,14 +1,13 @@
 package com.chefApp.demo.rest;
 
 import com.chefApp.demo.controller.RecipeService;
-import com.chefApp.demo.model.Ingredient;
+import com.chefApp.demo.model.Recipe;
 import com.chefApp.demo.model.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,8 +40,25 @@ public class RecipeEndpoint {
 
     @PostMapping
     public ResponseEntity<Recipe> createNewRecipe(@RequestBody Recipe recipe) {
+
         return new ResponseEntity<>(this.service.createOne(recipe), HttpStatus.CREATED);
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Recipe> updateById(@PathVariable long id, @RequestBody Recipe input) {
+        Optional<Recipe> oldRecipe = this.service.getOne(id);
+        if (oldRecipe.isPresent()) {
+            if (oldRecipe.isEmpty() == false) {
+                Recipe updated = (Recipe) this.service.updateOne(input, oldRecipe.get().getId());
+                return new ResponseEntity<>(updated, HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
+
     @DeleteMapping("{id}")
     public ResponseEntity<Recipe> deleteRecipeById(@PathVariable long id) {
         if (id >= 0) {

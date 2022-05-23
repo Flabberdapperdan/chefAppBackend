@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,9 +18,13 @@ public class IngredientEndpoint {
     private IngredientService service;
 
     @GetMapping
-    public List<Ingredient> getAllIngredients() {
+    public ResponseEntity<List> getAllIngredients() {
         List<Ingredient> allIngredients = service.getAll();
-        return allIngredients;
+        if (allIngredients.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(allIngredients, HttpStatus.ACCEPTED);
+        }
     }
 
     @GetMapping("{id}")
@@ -46,13 +48,16 @@ public class IngredientEndpoint {
 
     @PutMapping("{id}")
     public ResponseEntity<Ingredient> updateById(@PathVariable long id, @RequestBody Ingredient input) {
-        Optional<Ingredient> oldIngredient = this.service.getOne(input.getId());
-        Ingredient newIngredient = input;
-        if (oldIngredient.isEmpty() == false) {
-            Ingredient updated = (Ingredient) this.service.updateOne(newIngredient, oldIngredient.get().getId());
-            return new ResponseEntity<>(updated, HttpStatus.CREATED);
+        Optional<Ingredient> oldIngredient = this.service.getOne(id);
+        if (oldIngredient.isPresent()) {
+            if (oldIngredient.isEmpty() == false) {
+                Ingredient updated = (Ingredient) this.service.updateOne(input, id);
+                return new ResponseEntity<>(updated, HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
         } else {
-            return new ResponseEntity<>(new Ingredient(), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 
