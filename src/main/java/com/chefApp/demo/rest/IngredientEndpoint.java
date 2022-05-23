@@ -3,8 +3,11 @@ package com.chefApp.demo.rest;
 import com.chefApp.demo.controller.IngredientService;
 import com.chefApp.demo.model.Ingredient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,9 +31,13 @@ public class IngredientEndpoint {
     }
 
     @PostMapping
-    public List<Ingredient> createNewIngredient(@RequestBody Ingredient ingredient) {
-        service.createOne(ingredient);
-        return Arrays.asList(ingredient);
+    public ResponseEntity<Ingredient> createNewIngredient(@RequestBody Ingredient ingredient) {
+      
+    	Ingredient saved = this.service.createOne(ingredient);
+    	
+    	
+    	
+    	return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
     
     @PutMapping("{id}")
