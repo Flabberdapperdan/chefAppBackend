@@ -22,8 +22,8 @@ public class NutritionService {
 	public List<Nutrition> getAll() {
 		return r.findAll();
 	}
-	public void createOne(Nutrition nutrition) {
-	r.save(nutrition);
+	public Nutrition createOne(Nutrition nutrition) {
+	return r.save(nutrition);
 	}
 	
 	 public Object updateOne(Nutrition newNutrition, long id) {
