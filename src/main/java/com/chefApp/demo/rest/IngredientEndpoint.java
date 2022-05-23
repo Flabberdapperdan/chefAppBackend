@@ -1,22 +1,16 @@
 package com.chefApp.demo.rest;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.chefApp.demo.controller.IngredientService;
+import com.chefApp.demo.model.Ingredient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.chefApp.demo.controller.IngredientService;
-import com.chefApp.demo.model.Ingredient;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/ingredients")
@@ -29,12 +23,6 @@ public class IngredientEndpoint {
     public List<Ingredient> getAllIngredients() {
         List<Ingredient> allIngredients = service.getAll();
         return allIngredients;
-    }
-    
-    // let op: deze MOET bovenin andere krijg je een clash met @GetMapping("{id}")
-    @GetMapping("expensive")
-    public ResponseEntity<List<Ingredient>> findExpensive() {
-    	return new ResponseEntity<>(this.service.findExpensive(), HttpStatus.OK);
     }
 
     @GetMapping("{id}")
@@ -73,18 +61,6 @@ public class IngredientEndpoint {
         } else {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-    }
-    
-    @GetMapping("byName/{name}")
-    public ResponseEntity<Ingredient> findByName(@PathVariable String name) {
-    	
-    	Optional<Ingredient> optionalIngredient = this.service.findByName(name);
-    	if(optionalIngredient.isPresent()) {
-    		return new ResponseEntity<Ingredient>(optionalIngredient.get(), HttpStatus.OK);
-    	}
-    	else {
-    		return new ResponseEntity<Ingredient>(HttpStatus.NOT_FOUND);
-    	}
     }
 }
 

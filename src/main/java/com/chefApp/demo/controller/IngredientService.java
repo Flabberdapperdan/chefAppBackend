@@ -2,7 +2,6 @@ package com.chefApp.demo.controller;
 
 import com.chefApp.demo.model.Ingredient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import utilities.ValidationException;
 
@@ -45,13 +44,4 @@ public class IngredientService {
     public void deleteOne(long id) {
         r.deleteById(id);
     }
-
-	public Optional<Ingredient> findByName(String name) {
-		
-		return this.r.findByName(name);
-	}
-	
-	public List<Ingredient> findExpensive() {
-		return this.r.dureIngredienten(5.0);
-	}
 }
