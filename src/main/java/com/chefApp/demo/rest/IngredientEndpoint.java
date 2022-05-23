@@ -9,30 +9,45 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
+@RequestMapping("api/ingredients")
 public class IngredientEndpoint {
 
     @Autowired
-    IngredientService service;
+    private IngredientService service;
 
-    @GetMapping("ingredient/{id}")
+    @GetMapping("{id}")
     public Ingredient getIngredientById(@PathVariable("id") long id) {
         Ingredient foundIngredient = service.getOne(id).get();
         return foundIngredient;
     }
 
-    @GetMapping("allIngredients")
+    @GetMapping
     public List<Ingredient> getAllIngredients() {
         List<Ingredient> allIngredients = service.getAll();
         return allIngredients;
     }
 
-    @PostMapping("createIngredient")
+    @PostMapping
     public List<Ingredient> createNewIngredient(@RequestBody Ingredient ingredient) {
         service.createOne(ingredient);
         return Arrays.asList(ingredient);
     }
+    
+    @PutMapping("{id}")
+    public Ingredient updateById(@PathVariable long id, @RequestBody Ingredient input) {
+    	
+    	// pseudo
+    	/*
+    	 *  Haal ingredient met id id op
+    	 *  Zet waarden van input in dat object
+    	 *  save dat object
+    	 *  return dat
+    	 */
+    	
+    	return null; // foei
+    }
 
-    @DeleteMapping("deleteIngredient/{id}")
+    @DeleteMapping("{id}")
     public void deleteIngredientById(@PathVariable("id") long id) {
         service.deleteOne(id);
     }
