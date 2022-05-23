@@ -17,24 +17,25 @@ public class NutritionEndpoint {
     @Autowired
     NutritionService service;
 
-    @GetMapping("nutrition/{id}")
-    public Nutrition getNutritionById(@PathVariable("id") long id) {
+    @GetMapping("{id}")
+    public Nutrition getNutritionById(@PathVariable() long id) {
         Nutrition foundNutrition = service.getOne(id).get();
         return foundNutrition;
     }
 
-    @GetMapping("allNutrition")
+    @GetMapping
     public List<Nutrition> getAllNutrition() {
         List<Nutrition> allNutrition = service.getAll();
         return allNutrition;
     }
 
-    @PostMapping("createNutrition")
+    @PostMapping
     public List<Nutrition> createNewNutrition(@RequestBody Nutrition nutrition) {
         service.createOne(nutrition);
         return Arrays.asList(nutrition);
     }
-
+//    @PutMapping("{id}")
+    
     @DeleteMapping("deleteNutrition/{id}")
     public void deleteNutritionById(@PathVariable("id") long id) {
         service.deleteOne(id);
