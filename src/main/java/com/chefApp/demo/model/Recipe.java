@@ -23,6 +23,18 @@ public class Recipe {
 		public void setUserId(int userId) {
 		this.userId = userId;
 		}
+		public double getCost() {
+		return cost;
+		}
+		public void setCost(double cost) {
+		this.cost = cost;
+		}
+		public double getSalePrice() {
+		return salePrice;
+		}
+		public void setSalePrice(double salePrice) {
+		this.salePrice = salePrice;
+		}
 		public long getId() {
 			return id;
 		}
