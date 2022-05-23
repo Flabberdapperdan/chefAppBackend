@@ -14,13 +14,13 @@ public class IngredientService {
     @Autowired
     IngredientRepository r;
 
+    public List<Ingredient> getAll() {
+        return r.findAll();
+    }
+
     public Optional<Ingredient> getOne(long id) {
         Optional<Ingredient> foundIngredient = r.findById(id);
         return foundIngredient;
-    }
-
-    public List<Ingredient> getAll() {
-        return r.findAll();
     }
 
     public Ingredient createOne(Ingredient ingredient) {
