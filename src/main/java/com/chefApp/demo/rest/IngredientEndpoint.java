@@ -3,41 +3,58 @@ package com.chefApp.demo.rest;
 import com.chefApp.demo.controller.IngredientService;
 import com.chefApp.demo.model.Ingredient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
+@RequestMapping("api/ingredients")
 public class IngredientEndpoint {
 
     @Autowired
-    IngredientService service;
+    private IngredientService service;
 
-    @GetMapping("ingredient/{id}")
+    @GetMapping("{id}")
     public Ingredient getIngredientById(@PathVariable("id") long id) {
-        Optional foundOptionalIngredient = service.getOne(id);
-        Ingredient foundIngredient = new Ingredient();
-        if (foundOptionalIngredient.isPresent()) {
-            foundIngredient = (Ingredient) foundOptionalIngredient.get();
-        }
-
+        Ingredient foundIngredient = service.getOne(id).get();
         return foundIngredient;
     }
 
-    @GetMapping("allIngredients")
+    @GetMapping
     public List<Ingredient> getAllIngredients() {
         List<Ingredient> allIngredients = service.getAll();
         return allIngredients;
     }
 
-    @PostMapping("createIngredient")
-    public List<Ingredient> createNewIngredient(@RequestBody Ingredient ingredient) {
-        service.createOne(ingredient);
-        return Arrays.asList(ingredient);
+    @PostMapping
+    public ResponseEntity<Ingredient> createNewIngredient(@RequestBody Ingredient ingredient) {
+
+    	Ingredient saved = this.service.createOne(ingredient);
+
+
+
+    	return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
+    @PutMapping("{id}")
+    public Ingredient updateById(@PathVariable long id, @RequestBody Ingredient input) {
+
+    	// pseudo
+    	/*
+    	 *  Haal ingredient met id id op
+    	 *  Zet waarden van input in dat object
+    	 *  save dat object
+    	 *  return dat
+    	 */
+
+    	return null; // foei
+    }
+
+    @DeleteMapping("{id}")
     @PutMapping("updateIngredient/{id}")
     public Response updateById(@PathVariable("id") long id, @RequestBody Ingredient ingredient) {
         Optional<Ingredient> oldIngredient = service.getOne(id);
