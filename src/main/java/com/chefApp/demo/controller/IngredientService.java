@@ -18,8 +18,7 @@ public class IngredientService {
     }
 
     public Optional<Ingredient> getOne(long id) {
-        Optional<Ingredient> foundIngredient = r.findById(id);
-        return foundIngredient;
+       return r.findById(id);
     }
 
     public Ingredient createOne(Ingredient ingredient) {

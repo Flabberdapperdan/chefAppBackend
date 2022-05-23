@@ -26,9 +26,17 @@ public class IngredientEndpoint {
     }
 
     @GetMapping("{id}")
-    public Ingredient getIngredientById(@PathVariable long id) {
-        Ingredient foundIngredient = service.getOne(id).get();
-        return foundIngredient;
+    public ResponseEntity<Ingredient> getIngredientById(@PathVariable long id) {
+        if (id >= 0) {
+            Optional<Ingredient> found = service.getOne(id);
+            if (found.isPresent()) {
+                return new ResponseEntity<>(found.get(), HttpStatus.ACCEPTED);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping
