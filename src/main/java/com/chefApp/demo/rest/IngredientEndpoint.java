@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/ingredients")
@@ -18,44 +19,45 @@ public class IngredientEndpoint {
     @Autowired
     private IngredientService service;
 
-    @GetMapping("{id}")
-    public Ingredient getIngredientById(@PathVariable("id") long id) {
-        Ingredient foundIngredient = service.getOne(id).get();
-        return foundIngredient;
-    }
-
     @GetMapping
     public List<Ingredient> getAllIngredients() {
         List<Ingredient> allIngredients = service.getAll();
         return allIngredients;
     }
 
+    @GetMapping("{id}")
+    public Ingredient getIngredientById(@PathVariable long id) {
+        Ingredient foundIngredient = service.getOne(id).get();
+        return foundIngredient;
+    }
+
     @PostMapping
     public ResponseEntity<Ingredient> createNewIngredient(@RequestBody Ingredient ingredient) {
-      
-    	Ingredient saved = this.service.createOne(ingredient);
-    	
-    	
-    	
-    	return new ResponseEntity<>(saved, HttpStatus.CREATED);
+        return new ResponseEntity<>(this.service.createOne(ingredient), HttpStatus.CREATED);
     }
-    
+
     @PutMapping("{id}")
-    public Ingredient updateById(@PathVariable long id, @RequestBody Ingredient input) {
-    	
-    	// pseudo
-    	/*
-    	 *  Haal ingredient met id id op
-    	 *  Zet waarden van input in dat object
-    	 *  save dat object
-    	 *  return dat
-    	 */
-    	
-    	return null; // foei
+    public ResponseEntity<Ingredient> updateById(@PathVariable long id, @RequestBody Ingredient input) {
+        Optional<Ingredient> oldIngredient = this.service.getOne(input.getId());
+        Ingredient newIngredient = input;
+        if (oldIngredient.isEmpty() == false) {
+            Ingredient updated = (Ingredient) this.service.updateOne(newIngredient, oldIngredient.get().getId());
+            return new ResponseEntity<>(updated, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(new Ingredient(), HttpStatus.CONFLICT);
+        }
     }
 
     @DeleteMapping("{id}")
-    public void deleteIngredientById(@PathVariable("id") long id) {
-        service.deleteOne(id);
+    public ResponseEntity deleteIngredientById(@PathVariable("id") long id) {
+        if (id >= 0) {
+            service.deleteOne(id);
+            return new ResponseEntity(HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
     }
 }
+
+
+
