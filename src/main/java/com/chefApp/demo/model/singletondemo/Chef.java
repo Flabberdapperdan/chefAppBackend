@@ -1,4 +1,4 @@
-package com.chefApp.demo.model;
+package com.chefApp.demo.model.singletondemo;
 
 public class Chef {
 	

@@ -1,4 +1,6 @@
-package com.chefApp.demo.model;
+package com.chefApp.demo.model.encapsulationdemo;
+
+import com.chefApp.demo.model.Ingredient;
 
 public class App {
 

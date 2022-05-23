@@ -1,4 +1,6 @@
-package com.chefApp.demo.model;
+package com.chefApp.demo.model.builderdemo;
+
+import com.chefApp.demo.model.VleesIngredient;
 
 public class Kippenpoot extends VleesIngredient {
 
