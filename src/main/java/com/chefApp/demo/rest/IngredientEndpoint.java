@@ -3,7 +3,6 @@ package com.chefApp.demo.rest;
 import com.chefApp.demo.controller.IngredientService;
 import com.chefApp.demo.model.Ingredient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utilities.Response;
 
@@ -19,7 +18,12 @@ public class IngredientEndpoint {
 
     @GetMapping("ingredient/{id}")
     public Ingredient getIngredientById(@PathVariable("id") long id) {
-        Ingredient foundIngredient = service.getOne(id).get();
+        Optional foundOptionalIngredient = service.getOne(id);
+        Ingredient foundIngredient = new Ingredient();
+        if (foundOptionalIngredient.isPresent()) {
+            foundIngredient = (Ingredient) foundOptionalIngredient.get();
+        }
+
         return foundIngredient;
     }
 
@@ -35,7 +39,7 @@ public class IngredientEndpoint {
         return Arrays.asList(ingredient);
     }
 
-    @PostMapping("updateIngredient/{id}")
+    @PutMapping("updateIngredient/{id}")
     public Response updateById(@PathVariable("id") long id, @RequestBody Ingredient ingredient) {
         Optional<Ingredient> oldIngredient = service.getOne(id);
         if (oldIngredient.isEmpty() == false) {
@@ -46,12 +50,19 @@ public class IngredientEndpoint {
     }
 
     @DeleteMapping("deleteIngredient/{id}")
-    public Response deleteIngredientById(@PathVariable("id") long id) {
-        if (id >= 0) {
+    public void deleteIngredientById(@PathVariable("id") long id) {
+        service.deleteOne(id);
+    }
+
+}
+
+        /*
+         if (id >= 0) {
             service.deleteOne(id);
             return new Response(true);
         } else {
             return new Response(false);
-        }
-    }
-}
+        } */
+
+
+
