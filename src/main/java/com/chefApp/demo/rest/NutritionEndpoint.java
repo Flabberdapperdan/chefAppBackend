@@ -1,20 +1,18 @@
 package com.chefApp.demo.rest;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.*;
 
 import com.chefApp.demo.controller.NutritionService;
 import com.chefApp.demo.model.Nutrition;
 
 @RestController
-@RequestMapping
+@RequestMapping("api/nutrition")
 public class NutritionEndpoint {
     @Autowired
     NutritionService service;
@@ -48,8 +46,18 @@ public class NutritionEndpoint {
     	}
     }
     
-    @DeleteMapping("deleteNutrition/{id}")
-    public void deleteNutritionById(@PathVariable("id") long id) {
-        service.deleteOne(id);
-    }
+    @DeleteMapping("{id}")
+    public ResponseEntity deleteNutritionById(@PathVariable("id")long id) {
+        if (id >= 0) {
+        	Optional<Nutrition> exists = service.getOne(id);
+        	if(exists.isPresent()) {
+        	service.deleteOne(id);
+        	return new ResponseEntity(HttpStatus.ACCEPTED);
+        } else {
+        	return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        } else {
+        	return new ResponseEntity(HttpStatus.BAD_REQUEST);       	
+        }
+     }
 }
