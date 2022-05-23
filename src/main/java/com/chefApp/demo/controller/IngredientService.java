@@ -22,8 +22,8 @@ public class IngredientService {
         return r.findAll();
     }
 
-    public void createOne(Ingredient ingredient) {
-        r.save(ingredient);
+    public Ingredient createOne(Ingredient ingredient) {
+        return r.save(ingredient);
     }
 
     public void deleteOne(long id) {
