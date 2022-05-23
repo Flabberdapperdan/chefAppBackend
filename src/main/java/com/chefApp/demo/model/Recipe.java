@@ -11,8 +11,19 @@ public class Recipe {
 		@Id
         @GeneratedValue ( strategy = GenerationType.AUTO )
         long id;
+		int userId;
 		String name;
-        public long getId() {
+		double cost;
+		double salePrice;
+
+		//getters and setters\\
+		public int getUserId() {
+		return userId;
+		}
+		public void setUserId(int userId) {
+		this.userId = userId;
+		}
+		public long getId() {
 			return id;
 		}
 		public void setId(long id) {

@@ -39,17 +39,22 @@ public class RecipeEndpoint {
         }
     }
 
-    @PostMapping("createRecipe")
-    public List<Recipe> createNewRecipe(@RequestBody Recipe recipe) {
-        service.createOne(recipe);
-        return Arrays.asList(recipe);
+    @PostMapping
+    public ResponseEntity<Recipe> createNewRecipe(@RequestBody Recipe recipe) {
+        return new ResponseEntity<>(this.service.createOne(recipe), HttpStatus.CREATED);
     }
-    @DeleteMapping("deleteRecipe/{id}")
-    public void deleteRecipeById(@PathVariable("id")long id) {
-    	service.deleteOne(id);
+    @DeleteMapping("{id}")
+    public ResponseEntity<Recipe> deleteRecipeById(@PathVariable long id) {
+        if (id >= 0) {
+            Optional<Recipe> exists = service.getOne(id);
+            if (exists.isPresent()) {
+                service.deleteOne(id);
+                return new ResponseEntity(HttpStatus.ACCEPTED);
+            } else {
+                return new ResponseEntity(HttpStatus.NO_CONTENT);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
 	}
-    	
-   
-
-
 }

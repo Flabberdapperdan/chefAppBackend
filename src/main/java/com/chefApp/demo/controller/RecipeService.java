@@ -20,9 +20,8 @@ public class RecipeService {
        return r.findById(id);
     }
     
-    public void createOne(Recipe recipe) {
-        r.save(recipe);
-        
+    public Recipe createOne(Recipe recipe) {
+        return r.save(recipe);
     }    
     
     public void deleteOne(long id) {
