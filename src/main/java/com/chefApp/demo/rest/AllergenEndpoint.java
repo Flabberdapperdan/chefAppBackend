@@ -1,37 +1,52 @@
 package com.chefApp.demo.rest;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.chefApp.demo.controller.AllergenService;
 import com.chefApp.demo.model.Allergen;
 
+
 @RestController
+@RequestMapping("api/allergen")
 public class AllergenEndpoint {
+	
 	@Autowired
-	AllergenService service;
-	@AutoMapping("api/allergen")
+	private AllergenService service;
+	
 	@GetMapping({"id"})
 	public Allergen getAllergenById(@PathVariable() long id) {
 		Allergen foundAllergen = service.getOne(id).get();
 		return foundAllergen;		
 	}
+	
+	@GetMapping
+	public List<Allergen> getAllAllergens(){
+		List<Allergen> allAllergens = service.getAll();
+		return allAllergens;
+	}
+				
 	@PostMapping
-	public List<Allergen> createNewAllergen(@RequestBody Allergen allergen){
-		service.CreateOne(allergen);
-		return Arrays.asList(allergen);
+	public ResponseEntity<Allergen> createNewAllergen(@RequestBody Allergen allergen){
+		
+		Allergen saved = this.service.CreateOne(allergen);
+		
+		return new ResponseEntity<>(saved, HttpStatus.CREATED);
+	}
+	@PutMapping("{id}")
+	public Allergen updateById(@PathVariable long id, @RequestBody Allergen input) {	
+		return null;
+	}
+	
+	
 	@DeleteMapping("{id}")
-	public Allergen getAllergenById(@PathVariable() long id) {
-		
+	public void  deleteAllergenById(@PathVariable() long id) {
+		service.deleteOne(id);
 		
 	}
-	}
+	
 }
