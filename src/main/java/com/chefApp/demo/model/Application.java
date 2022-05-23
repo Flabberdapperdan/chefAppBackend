@@ -16,5 +16,16 @@ public class Application {
 		
 		Ingredient i = IngredientFactory.getIngredient("sla");
 		
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(45);
+		stringBuilder.append(true);
+		stringBuilder.append('R');
+		
+		stringBuilder.reverse();
+		
+		String label = stringBuilder.toString();
+		
+		System.out.println(label);
+		
 	}
 }

@@ -1,5 +1,7 @@
 package com.chefApp.demo.model;
 
+import com.chefApp.demo.model.Kippenpoot.KippenpootBuilder;
+
 public class IngredientFactory {
 	
 	public static Ingredient getIngredient(String type) {
@@ -9,7 +11,16 @@ public class IngredientFactory {
 			return sla;
 		} else {
 			if("kippenpoot".equals(type)) {
-				return new Kippenpoot();
+				
+				
+				Kippenpoot result = new KippenpootBuilder("Tokkie")
+						.metKosten(5)
+						.metGewicht(30)
+						.metVetgehalte(55)
+						.build();
+				
+				return result;
+				
 			}
 		}
 		
