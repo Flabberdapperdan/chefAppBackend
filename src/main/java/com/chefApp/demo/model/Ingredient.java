@@ -8,7 +8,7 @@ import javax.persistence.Id;
 
 @Entity
 public class Ingredient {
-
+	
     // primary key    AutoIncrement
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO)
@@ -33,6 +33,11 @@ public class Ingredient {
         return cost;
     }
     public void setCost(double cost) {
-        this.cost = cost;
+    	if(cost > 0) {
+    		 this.cost = cost;
+    	} else {
+    		System.err.println("Een ingredient moet een cost hebben groter dan 0");
+    		this.cost = 1;
+    	}
     }
 }
