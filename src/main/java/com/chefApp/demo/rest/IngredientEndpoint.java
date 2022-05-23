@@ -4,7 +4,6 @@ import com.chefApp.demo.controller.IngredientService;
 import com.chefApp.demo.model.Ingredient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import utilities.Response;
 
 import java.util.Arrays;
 import java.util.List;
