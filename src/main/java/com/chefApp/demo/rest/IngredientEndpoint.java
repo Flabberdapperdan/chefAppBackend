@@ -63,9 +63,31 @@ public class IngredientEndpoint {
             return new Response(true);
         }
         return new Response(false);
+    @PostMapping
+    public ResponseEntity<Ingredient> createNewIngredient(@RequestBody Ingredient ingredient) {
+
+    	Ingredient saved = this.service.createOne(ingredient);
+
+
+
+    	return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("deleteIngredient/{id}")
+    @PutMapping("{id}")
+    public Ingredient updateById(@PathVariable long id, @RequestBody Ingredient input) {
+
+    	// pseudo
+    	/*
+    	 *  Haal ingredient met id id op
+    	 *  Zet waarden van input in dat object
+    	 *  save dat object
+    	 *  return dat
+    	 */
+
+    	return null; // foei
+    }
+
+    @DeleteMapping("{id}")
     public void deleteIngredientById(@PathVariable("id") long id) {
         service.deleteOne(id);
     }
