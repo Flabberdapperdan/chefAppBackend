@@ -2,7 +2,6 @@ package com.chefApp.demo.rest;
 
 import com.chefApp.demo.controller.RecipeService;
 import com.chefApp.demo.model.Recipe;
-import com.chefApp.demo.model.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,12 @@ public class RecipeEndpoint {
 
     @GetMapping
     public ResponseEntity<List> getAll() {
-        return new ResponseEntity<>(service.getAll(), HttpStatus.ACCEPTED);
+        List allIngredients = service.getAll();
+        if (!allIngredients.isEmpty()) {
+            return new ResponseEntity<>(allIngredients, HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
     }
 
     @GetMapping("{id}")
@@ -40,7 +44,6 @@ public class RecipeEndpoint {
 
     @PostMapping
     public ResponseEntity<Recipe> createNewRecipe(@RequestBody Recipe recipe) {
-
         return new ResponseEntity<>(this.service.createOne(recipe), HttpStatus.CREATED);
     }
 

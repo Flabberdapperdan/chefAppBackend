@@ -20,7 +20,7 @@ public class IngredientEndpoint {
     @GetMapping
     public ResponseEntity<List> getAllIngredients() {
         List<Ingredient> allIngredients = service.getAll();
-        if (allIngredients.isEmpty()) {
+        if (!allIngredients.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(allIngredients, HttpStatus.ACCEPTED);
