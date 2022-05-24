@@ -2,6 +2,7 @@ package com.chefApp.demo.rest;
 
 import com.chefApp.demo.controller.UserService;
 import com.chefApp.demo.model.Ingredient;
+import com.chefApp.demo.model.Recipe;
 import com.chefApp.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,6 +64,18 @@ public class UserEndpoint {
         }
     }
 
-    
-
+    @DeleteMapping
+    public ResponseEntity<User> deleteRecipeById(@PathVariable long id) {
+        if (id >= 0) {
+            Optional<User> exists = service.getOne(id);
+            if (exists.isPresent()) {
+                service.deleteOne(id);
+                return new ResponseEntity(HttpStatus.ACCEPTED);
+            } else {
+                return new ResponseEntity(HttpStatus.NO_CONTENT);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

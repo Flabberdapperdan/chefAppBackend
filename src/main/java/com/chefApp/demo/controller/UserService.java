@@ -39,5 +39,7 @@ public class UserService {
         return r.save(oldUser);
     }
 
-
+    public void deleteOne(long id) {
+     r.deleteById(id);
+    }
 }
