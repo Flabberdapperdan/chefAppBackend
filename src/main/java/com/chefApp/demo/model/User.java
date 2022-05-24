@@ -11,12 +11,6 @@ public class User {
     private long id;
     private String name;
     private String userName;
-    @ManyToMany
-    @JoinTable(
-            name = "ingredient_allergens",
-            joinColumns = @JoinColumn(name = "ingredient_id"),
-            inverseJoinColumns = @JoinColumn(name = "allergen_id"))
-    Set<Allergen> containedAllergens;
 
     // getters and setters \\
     public long getId() {
@@ -43,11 +37,4 @@ public class User {
         this.userName = userName;
     }
 
-    public Set<Allergen> getContainedAllergens() {
-        return containedAllergens;
-    }
-
-    public void setContainedAllergens(Set<Allergen> containedAllergens) {
-        this.containedAllergens = containedAllergens;
-    }
 }

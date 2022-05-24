@@ -1,9 +1,7 @@
 package com.chefApp.demo.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 
 @Entity
@@ -15,6 +13,12 @@ public class Ingredient {
     private long id;
     private String name;
     private double cost;
+    @ManyToMany
+    @JoinTable(
+            name = "ingredient_allergens",
+            joinColumns = @JoinColumn(name = "ingredient_id"),
+            inverseJoinColumns = @JoinColumn(name = "allergen_id"))
+    Set<Allergen> containedAllergens;
 
     //getters and setters
     public long getId() {
@@ -34,5 +38,13 @@ public class Ingredient {
     }
     public void setCost(double cost) {
         this.cost = cost;
+    }
+
+    public Set<Allergen> getContainedAllergens() {
+        return containedAllergens;
+    }
+
+    public void setContainedAllergens(Set<Allergen> containedAllergens) {
+        this.containedAllergens = containedAllergens;
     }
 }
