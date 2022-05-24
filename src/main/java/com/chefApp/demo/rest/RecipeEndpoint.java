@@ -50,15 +50,15 @@ public class RecipeEndpoint {
     @PutMapping("{id}")
     public ResponseEntity<Recipe> updateById(@PathVariable long id, @RequestBody Recipe input) {
         Optional<Recipe> oldRecipe = this.service.getOne(id);
-        if (oldRecipe.isPresent()) {
-            if (oldRecipe.isEmpty() == false) {
+        if (id >= 0) {
+            if (oldRecipe.isPresent()) {
                 Recipe updated = (Recipe) this.service.updateOne(input, oldRecipe.get().getId());
                 return new ResponseEntity<>(updated, HttpStatus.CREATED);
             } else {
-                return new ResponseEntity<>(HttpStatus.CONFLICT);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
         } else {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 

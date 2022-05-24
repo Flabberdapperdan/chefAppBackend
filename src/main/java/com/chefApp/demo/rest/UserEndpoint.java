@@ -1,6 +1,7 @@
 package com.chefApp.demo.rest;
 
 import com.chefApp.demo.controller.UserService;
+import com.chefApp.demo.model.Ingredient;
 import com.chefApp.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class UserEndpoint {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<User> getOne(long id) {
+    public ResponseEntity<User> getOne(@PathVariable long id) {
         if (id >= 0) {
             Optional<User> userOptional = service.getOne(id);
             if (userOptional.isPresent()) {
@@ -41,5 +42,27 @@ public class UserEndpoint {
         }
     }
 
+    @PostMapping
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        return new ResponseEntity<>(this.service.createOne(user),
+                HttpStatus.CREATED);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<User> updateById(@PathVariable long id, @RequestBody User input) {
+        Optional<User> oldUserOptional = this.service.getOne(id);
+        if (id >= 0) {
+            if (oldUserOptional.isPresent()) {
+                User updated = (User) this.service.updateOne(input, id);
+                return new ResponseEntity<>(updated, HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    
 
 }
