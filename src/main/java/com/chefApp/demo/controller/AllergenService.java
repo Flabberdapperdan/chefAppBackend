@@ -14,7 +14,7 @@ import utilities.ValidationException;
 @Service
 public class AllergenService {
 	@Autowired
-	AllergenRepository r;
+	private AllergenRepository r;
 
 	public Optional<Allergen> getOne(long id){
 		Optional<Allergen> foundAllergen = r.findById(id);

@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class IngredientService {
     @Autowired
-    IngredientRepository r;
+    private IngredientRepository r;
 
     public List<Ingredient> getAll() {
         return r.findAll();
