@@ -37,8 +37,7 @@ public class IngredientService {
         } else {
             return new ValidationException();
         }
-        Ingredient updatedIngredient = r.save(oldIngredient);
-        return updatedIngredient;
+        return r.save(oldIngredient);
     }
     public void deleteOne(long id) {
         r.deleteById(id);

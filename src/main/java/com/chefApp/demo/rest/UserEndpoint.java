@@ -1,7 +1,9 @@
 package com.chefApp.demo.rest;
 
-import com.chefApp.demo.controller.RecipeService;
+import com.chefApp.demo.controller.UserService;
+import com.chefApp.demo.model.Ingredient;
 import com.chefApp.demo.model.Recipe;
+import com.chefApp.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,30 +12,29 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-
 @RestController
-@RequestMapping("api/recipes")
-public class RecipeEndpoint {
+@RequestMapping("api/users")
+public class UserEndpoint {
 
     @Autowired
-    RecipeService service;
+    UserService service;
 
     @GetMapping
     public ResponseEntity<List> getAll() {
-        List allIngredients = service.getAll();
-        if (!allIngredients.isEmpty()) {
-            return new ResponseEntity<>(allIngredients, HttpStatus.ACCEPTED);
+        List<User> usersList = service.getAll();
+        if (!usersList.isEmpty()) {
+            return new ResponseEntity<>(usersList, HttpStatus.ACCEPTED);
         } else {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Recipe> getRecipeById(@PathVariable("id") long id) {
-        if(id >= 0) {
-            Optional<Recipe> foundRecipe = service.getOne(id);
-            if(foundRecipe.isPresent()) {
-                return new ResponseEntity<>(foundRecipe.get(), HttpStatus.ACCEPTED);
+    public ResponseEntity<User> getOne(@PathVariable long id) {
+        if (id >= 0) {
+            Optional<User> userOptional = service.getOne(id);
+            if (userOptional.isPresent()) {
+                return new ResponseEntity<>(userOptional.get(), HttpStatus.ACCEPTED);
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -43,16 +44,17 @@ public class RecipeEndpoint {
     }
 
     @PostMapping
-    public ResponseEntity<Recipe> createNewRecipe(@RequestBody Recipe recipe) {
-        return new ResponseEntity<>(this.service.createOne(recipe), HttpStatus.CREATED);
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        return new ResponseEntity<>(this.service.createOne(user),
+                HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Recipe> updateById(@PathVariable long id, @RequestBody Recipe input) {
-        Optional<Recipe> oldRecipe = this.service.getOne(id);
+    public ResponseEntity<User> updateById(@PathVariable long id, @RequestBody User input) {
+        Optional<User> oldUserOptional = this.service.getOne(id);
         if (id >= 0) {
-            if (oldRecipe.isPresent()) {
-                Recipe updated = (Recipe) this.service.updateOne(input, oldRecipe.get().getId());
+            if (oldUserOptional.isPresent()) {
+                User updated = (User) this.service.updateOne(input, id);
                 return new ResponseEntity<>(updated, HttpStatus.CREATED);
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -62,10 +64,10 @@ public class RecipeEndpoint {
         }
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Recipe> deleteRecipeById(@PathVariable long id) {
+    @DeleteMapping
+    public ResponseEntity<User> deleteRecipeById(@PathVariable long id) {
         if (id >= 0) {
-            Optional<Recipe> exists = service.getOne(id);
+            Optional<User> exists = service.getOne(id);
             if (exists.isPresent()) {
                 service.deleteOne(id);
                 return new ResponseEntity(HttpStatus.ACCEPTED);
@@ -75,5 +77,5 @@ public class RecipeEndpoint {
         } else {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-	}
+    }
 }
