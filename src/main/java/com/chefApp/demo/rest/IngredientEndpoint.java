@@ -18,12 +18,14 @@ public class IngredientEndpoint {
     private IngredientService service;
 
     @GetMapping
-    public ResponseEntity<List> getAllIngredients() {
-        List<Ingredient> allIngredients = service.getAll();
-        if (!allIngredients.isEmpty()) {
+    public ResponseEntity<Ingredient[]> getAllIngredients() {
+        List<Ingredient> ingredientList = service.getAll();
+        if (ingredientList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            return new ResponseEntity<>(allIngredients, HttpStatus.ACCEPTED);
+            Ingredient[] ingredientArray = new Ingredient[ingredientList.size()];
+            ingredientList.toArray(ingredientArray);
+            return new ResponseEntity<>(ingredientArray, HttpStatus.ACCEPTED);
         }
     }
 
