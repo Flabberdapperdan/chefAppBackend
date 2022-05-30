@@ -22,6 +22,7 @@ public class IngredientService {
     }
 
     public Ingredient createOne(Ingredient ingredient) {
+        System.out.println(ingredient);
         return r.save(ingredient);
     }
 
