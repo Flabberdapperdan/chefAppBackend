@@ -29,7 +29,7 @@ public class RecipeEndpoint {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Recipe> getRecipeById(@PathVariable("id") long id) {
+    public ResponseEntity<Recipe> getRecipeById(@PathVariable long id) {
         if(id >= 0) {
             Optional<Recipe> foundRecipe = service.getOne(id);
             if(foundRecipe.isPresent()) {
