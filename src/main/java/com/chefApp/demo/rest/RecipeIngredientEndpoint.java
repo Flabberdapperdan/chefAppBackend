@@ -1,7 +1,10 @@
 package com.chefApp.demo.rest;
 
+import com.chefApp.demo.controller.IngredientService;
 import com.chefApp.demo.controller.RecipeIngredientService;
+import com.chefApp.demo.controller.RecipeService;
 import com.chefApp.demo.model.Recipe;
+import com.chefApp.demo.model.RecipeIngredient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,10 @@ import java.util.List;
 public class RecipeIngredientEndpoint {
     @Autowired
     RecipeIngredientService service;
+    @Autowired
+    RecipeService recipeService;
+    @Autowired
+    IngredientService ingredientService;
 
     @GetMapping("/recipe/{recipeId}")
     public ResponseEntity<List> getRecipes(@PathVariable long recipeId) {
@@ -35,9 +42,11 @@ public class RecipeIngredientEndpoint {
     }
 
     @PostMapping
-    public void postRecipeIngredient() {
-        return new ResponseEntity<>(this.service. (recipe), HttpStatus.CREATED);
-
+    public ResponseEntity<RecipeIngredient> postRecipeIngredient(@RequestBody List bodyList) {
+        System.out.println(bodyList);
+        //Recipe recipe = recipeService(bodyObject.getValue("recipe_id"));
+        //return new ResponseEntity<>(this.service.createOne(bodyObject), HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
 }

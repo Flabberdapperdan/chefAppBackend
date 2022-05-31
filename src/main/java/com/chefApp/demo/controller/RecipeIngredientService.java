@@ -17,4 +17,8 @@ public class RecipeIngredientService {
         return r.findByRecipeId(id);
     }
 
+
+
+    public RecipeIngredient createOne(RecipeIngredient RecipeIngredient) { return r.save(RecipeIngredient); }
+
 }

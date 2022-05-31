@@ -20,6 +20,10 @@ public class Ingredient {
             inverseJoinColumns = @JoinColumn(name = "allergen_id"))
     Set<Allergen> containedAllergens;
 
+    //link to RecipeIngredient
+    @OneToMany(mappedBy = "ingredient")
+    Set<RecipeIngredient> recipeIngredient;
+
     //getters and setters
     public long getId() {
         return id;

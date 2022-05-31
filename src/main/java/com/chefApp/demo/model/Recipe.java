@@ -14,6 +14,9 @@ public class Recipe {
 		double cost;
 		double salePrice;
 
+		@OneToMany(mappedBy = "recipe")
+		Set<RecipeIngredient> recipeIngredient;
+
 		//getters and setters\\
 		public int getUserId() {
 		return userId;
