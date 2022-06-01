@@ -18,13 +18,9 @@ public class IngredientEndpoint {
     private IngredientService service;
 
     @GetMapping
-    public ResponseEntity<List> getAllIngredients() {
-        List<Ingredient> allIngredients = service.getAll();
-        if (!allIngredients.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(allIngredients, HttpStatus.ACCEPTED);
-        }
+    public ResponseEntity<List<Ingredient>> getAllIngredients() {
+        List<Ingredient> ingredientList = service.getAll();
+        return new ResponseEntity<>(ingredientList, HttpStatus.ACCEPTED);
     }
 
     @GetMapping("{id}")

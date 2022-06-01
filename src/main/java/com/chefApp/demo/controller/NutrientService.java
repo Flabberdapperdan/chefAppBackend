@@ -8,21 +8,21 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.chefApp.demo.model.Nutrition;
+import com.chefApp.demo.model.Nutrient;
 
 import utilities.ValidationException;
 
 @Service
-public class NutritionService {
+public class NutrientService {
 	@Autowired
-	NutritionRepository r;
+	NutrientRepository r;
 	
-	public Optional<Nutrition> getOne(Long id) {
-		Optional<Nutrition> foundNutrition = r.findById(id);
+	public Optional<Nutrient> getOne(Long id) {
+		Optional<Nutrient> foundNutrition = r.findById(id);
 		return foundNutrition;		
 	}
 	
-	public List<Nutrition> getAll() {
+	public List<Nutrient> getAll() {
 		return r.findAll();
 	}
 	
@@ -37,12 +37,12 @@ public class NutritionService {
 	 * wordt er geen transactie gestart). Dat is zelfs bij senior developers een vaak voorkomend misverstand.
 	 */
 	@Transactional // creates a Transaction
-	public Nutrition createOne(Nutrition nutrition) {
+	public Nutrient createOne(Nutrient nutrition) {
 	return r.save(nutrition);
 	}
 	
-	 public Object updateOne(Nutrition newNutrition, long id) {
-	        Nutrition oldNutrition = this.getOne(id).get();
+	 public Object updateOne(Nutrient newNutrition, long id) {
+		Nutrient oldNutrition = this.getOne(id).get();
 	        if (newNutrition.getName().length() > 0) {
 	            oldNutrition.setName(newNutrition.getName());
 	        } else {
@@ -50,7 +50,7 @@ public class NutritionService {
 	        }
 	       
 	        
-	        Nutrition updatedNutrition= r.save(oldNutrition);
+	        Nutrient updatedNutrition= r.save(oldNutrition);
 	        return updatedNutrition;
 	 }
 	public void deleteOne(long id) {

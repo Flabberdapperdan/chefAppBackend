@@ -1,7 +1,6 @@
 package com.chefApp.demo.model;
 
 import javax.persistence.*;
-import java.util.Set;
 
 
 @Entity
@@ -11,14 +10,11 @@ public class Ingredient {
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO)
     private long id;
+    private String code;
     private String name;
-    private double cost;
-    @ManyToMany
-    @JoinTable(
-            name = "ingredient_allergens",
-            joinColumns = @JoinColumn(name = "ingredient_id"),
-            inverseJoinColumns = @JoinColumn(name = "allergen_id"))
-    Set<Allergen> containedAllergens;
+    @Column(name = "grp")
+    private String group;
+    private double marketPrice;
 
     //getters and setters
     public long getId() {
@@ -27,24 +23,30 @@ public class Ingredient {
     public void setId(long id) {
         this.id = id;
     }
+    public String getCode() {
+        return code;
+    }
+    public void setCode(String code) {
+        this.code = code;
+    }
     public String getName() {
         return name;
     }
     public void setName(String name) {
         this.name = name;
     }
-    public double getCost() {
-        return cost;
+    public String getGroup()
+    {
+        return group;
     }
-    public void setCost(double cost) {
-        this.cost = cost;
+    public void setGroup(String group)
+    {
+        this.group = group;
     }
-
-    public Set<Allergen> getContainedAllergens() {
-        return containedAllergens;
+    public double getMarketPrice() {
+        return marketPrice;
     }
-
-    public void setContainedAllergens(Set<Allergen> containedAllergens) {
-        this.containedAllergens = containedAllergens;
+    public void setCost(double marketPrice) {
+        this.marketPrice = marketPrice;
     }
 }

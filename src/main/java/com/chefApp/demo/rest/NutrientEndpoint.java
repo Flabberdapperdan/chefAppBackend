@@ -8,48 +8,48 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.chefApp.demo.controller.NutritionService;
-import com.chefApp.demo.model.Nutrition;
+import com.chefApp.demo.controller.NutrientService;
+import com.chefApp.demo.model.Nutrient;
 
 @RestController
 @RequestMapping("api/nutrition")
-public class NutritionEndpoint {
+public class NutrientEndpoint {
     @Autowired
-    NutritionService service;
+    NutrientService service;
 
     @GetMapping("{id}")
-    public Nutrition getNutritionById(@PathVariable() long id) {
-        Nutrition foundNutrition = service.getOne(id).get();
+    public Nutrient getNutritionById(@PathVariable() long id) {
+        Nutrient foundNutrition = service.getOne(id).get();
         return foundNutrition;
     }
 
     @GetMapping
-    public List<Nutrition> getAllNutrition() {
-        List<Nutrition> allNutrition = service.getAll();
+    public List<Nutrient> getAllNutrition() {
+        List<Nutrient> allNutrition = service.getAll();
         return allNutrition;
     }
 
     @PostMapping
-    public ResponseEntity<Nutrition> createNewNutrition(@RequestBody Nutrition nutrition) {
-    	return new ResponseEntity<Nutrition>(this.service.createOne(nutrition), HttpStatus.CREATED);
+    public ResponseEntity<Nutrient> createNewNutrition(@RequestBody Nutrient nutrition) {
+    	return new ResponseEntity<Nutrient>(this.service.createOne(nutrition), HttpStatus.CREATED);
     }
     
     @PutMapping("{id}")
-    public ResponseEntity<Nutrition> updateById(@PathVariable() long id, @RequestBody Nutrition input){
-    	Nutrition newNutrition = input;
-    	Optional<Nutrition> oldNutrition = this.service.getOne(input.getId());
+    public ResponseEntity<Nutrient> updateById(@PathVariable() long id, @RequestBody Nutrient input){
+    	Nutrient newNutrition = input;
+    	Optional<Nutrient> oldNutrition = this.service.getOne(input.getId());
     	if (oldNutrition.isEmpty()==false) {
-    		Nutrition updated = (Nutrition) this.service.updateOne(newNutrition, oldNutrition.get().getId());
+    		Nutrient updated = (Nutrient) this.service.updateOne(newNutrition, oldNutrition.get().getId());
     		return new ResponseEntity<>(updated, HttpStatus.CREATED);
     	} else {
-    		return new ResponseEntity<>(new Nutrition(), HttpStatus.CONFLICT);
+    		return new ResponseEntity<>(new Nutrient(), HttpStatus.CONFLICT);
     	}
     }
     
     @DeleteMapping("{id}")
     public ResponseEntity deleteNutritionById(@PathVariable("id")long id) {
         if (id >= 0) {
-        	Optional<Nutrition> exists = service.getOne(id);
+        	Optional<Nutrient> exists = service.getOne(id);
         	if(exists.isPresent()) {
         	service.deleteOne(id);
         	return new ResponseEntity(HttpStatus.ACCEPTED);

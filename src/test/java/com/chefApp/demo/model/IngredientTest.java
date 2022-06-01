@@ -24,7 +24,7 @@ public class IngredientTest {
 	@Test
 	public void testSetAndGetPrice() {
 		this.ingredient.setCost(15.0);
-		assertEquals(15.0, ingredient.getCost());
+		assertEquals(15.0, ingredient.getMarketPrice());
 	}
 
 }
