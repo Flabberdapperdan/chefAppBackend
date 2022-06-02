@@ -1,6 +1,7 @@
 package com.chefApp.demo.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 
 @Entity
@@ -15,6 +16,10 @@ public class Ingredient {
     @Column(name = "grp")
     private String group;
     private double marketPrice;
+
+    //link to RecipeIngredient
+    @OneToMany(mappedBy = "ingredient")
+    Set<RecipeIngredient> recipeIngredient;
 
     //getters and setters
     public long getId() {

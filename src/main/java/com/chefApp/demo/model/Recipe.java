@@ -10,9 +10,15 @@ public class Recipe {
         @GeneratedValue ( strategy = GenerationType.AUTO )
         long id;
 		int userId;
+
+		@Column(nullable = false, length = 100)
 		String name;
+
 		double cost;
 		double salePrice;
+
+		@OneToMany(mappedBy = "recipe")
+		Set<RecipeIngredient> recipeIngredient;
 
 		//getters and setters\\
 		public int getUserId() {
