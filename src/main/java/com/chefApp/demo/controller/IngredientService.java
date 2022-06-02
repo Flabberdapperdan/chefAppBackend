@@ -1,6 +1,7 @@
 package com.chefApp.demo.controller;
 
 import com.chefApp.demo.model.Ingredient;
+import com.chefApp.demo.repository.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utilities.ValidationException;
