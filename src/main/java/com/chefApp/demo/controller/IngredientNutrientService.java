@@ -1,38 +1,38 @@
 package com.chefApp.demo.controller;
 
-import com.chefApp.demo.model.Ingredient;
 import com.chefApp.demo.model.IngredientNutrient;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import utilities.ValidationException;
 
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.Optional;
 
 @Service
 public class IngredientNutrientService {
     @Autowired
-    private IngredientNutrientRepository r;
+    private IngredientNutrientRepository ingredientNutrientRepository;
 
-    public List<IngredientNutrient> getAll() {
-        return r.findAll();
+    Logger logger = Logger.getLogger(IngredientNutrientService.class.getName());
+
+    public List<IngredientNutrient> readAll() {
+        return ingredientNutrientRepository.findAll();
     }
 
-    public Optional<IngredientNutrient> getOne(long id) {
-       return r.findById(id);
+    public Optional<IngredientNutrient> read(long id) {
+       return ingredientNutrientRepository.findById(id);
     }
 
-    public IngredientNutrient createOne(IngredientNutrient ingredientNutrient) {
-        System.out.println(ingredientNutrient);
-        return r.save(ingredientNutrient);
+    public IngredientNutrient create(IngredientNutrient ingredientNutrient) {
+        //Data Access Verification
+        return ingredientNutrientRepository.save(ingredientNutrient);
     }
 
-    public Object updateOne(IngredientNutrient newIngredientNutrient, long id) {
-        newIngredientNutrient.setId(id);
-        return r.save(newIngredientNutrient);
+    public IngredientNutrient update(IngredientNutrient ingredientNutrient) {
+        //Data Access Verification
+        return ingredientNutrientRepository.save(ingredientNutrient);
     }
-    public void deleteOne(long id) {
-        r.deleteById(id);
+    public void delete(long id) {
+        ingredientNutrientRepository.deleteById(id);
     }
 }

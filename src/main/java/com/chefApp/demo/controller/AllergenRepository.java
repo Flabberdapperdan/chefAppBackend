@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.chefApp.demo.model.Allergen;
 
-@Repository // subtype of @Component
-public interface AllergenRepository extends JpaRepository<Allergen, Long>{}
+@Repository
+public interface AllergenRepository extends JpaRepository<Allergen, Long>{
+    
+}

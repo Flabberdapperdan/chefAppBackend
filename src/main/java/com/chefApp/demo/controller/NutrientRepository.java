@@ -8,5 +8,6 @@ import com.chefApp.demo.model.Nutrient;
 
 @Repository
 public interface NutrientRepository extends JpaRepository<Nutrient, Long> {
+    
 }
 
