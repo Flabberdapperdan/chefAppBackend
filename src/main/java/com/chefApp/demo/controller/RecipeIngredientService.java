@@ -1,24 +1,23 @@
 package com.chefApp.demo.controller;
 
-import com.chefApp.demo.model.Ingredient;
-import com.chefApp.demo.model.RecipeIngredient;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.chefApp.demo.model.RecipeIngredient;
 
 @Service
 public class RecipeIngredientService {
-    @Autowired
-    RecipeIngredientRepository r;
+	@Autowired
+	RecipeIngredientRepository r;
 
-    public List<RecipeIngredient> getByRecipeId(long id) {
-        return r.findByRecipeId(id);
-    }
+	public List<RecipeIngredient> getByRecipeId(long id) {
+		return r.findByRecipeId(id);
+	}
 
-
-
-    public RecipeIngredient createOne(RecipeIngredient RecipeIngredient) { return r.save(RecipeIngredient); }
+	public RecipeIngredient createOne(RecipeIngredient RecipeIngredient) {
+		return r.save(RecipeIngredient);
+	}
 
 }

@@ -1,7 +1,12 @@
 package com.chefApp.demo.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.*;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 
 @Entity
 public class RecipeIngredient {
@@ -19,14 +24,15 @@ public class RecipeIngredient {
     @JoinColumn(name = "ingredient_id")
     Ingredient ingredient;
 
-    int amount;
-    String metric;
+    double amount;
 
-    public int getAmount() {
+    String metric;
+    
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

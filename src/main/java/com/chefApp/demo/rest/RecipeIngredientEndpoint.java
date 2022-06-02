@@ -1,16 +1,25 @@
 package com.chefApp.demo.rest;
 
-import com.chefApp.demo.controller.IngredientService;
-import com.chefApp.demo.controller.RecipeIngredientService;
-import com.chefApp.demo.controller.RecipeService;
-import com.chefApp.demo.model.Recipe;
-import com.chefApp.demo.model.RecipeIngredient;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.chefApp.demo.DTO.RecipeIngredientDTO;
+import com.chefApp.demo.controller.IngredientService;
+import com.chefApp.demo.controller.RecipeIngredientService;
+import com.chefApp.demo.controller.RecipeService;
+import com.chefApp.demo.model.Ingredient;
+import com.chefApp.demo.model.Recipe;
+import com.chefApp.demo.model.RecipeIngredient;
 
 @RestController
 @RequestMapping("api/recipeIngredient")
@@ -22,18 +31,12 @@ public class RecipeIngredientEndpoint {
     @Autowired
     IngredientService ingredientService;
 
+    @Autowired
+    RecipeIngredientService recipeIngredientService;
+
     @GetMapping("/recipe/{recipeId}")
-    public ResponseEntity<List> getRecipes(@PathVariable long recipeId) {
-        if (recipeId >= 0) {
-            List responseList = service.getByRecipeId(recipeId);
-            if (!responseList.isEmpty()) {
-                return new ResponseEntity<List>(responseList, HttpStatus.ACCEPTED);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public List<RecipeIngredient> getRecipeIngredientsByRecipeId(@PathVariable long recipeId) {
+    	return this.recipeIngredientService.getByRecipeId(recipeId);
     }
 
     @GetMapping("ingredient/{ingredientId}")
@@ -41,12 +44,29 @@ public class RecipeIngredientEndpoint {
 
     }
 
-    @PostMapping
-    public ResponseEntity<RecipeIngredient> postRecipeIngredient(@RequestBody List bodyList) {
-        System.out.println(bodyList);
-        //Recipe recipe = recipeService(bodyObject.getValue("recipe_id"));
-        //return new ResponseEntity<>(this.service.createOne(bodyObject), HttpStatus.CREATED);
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    @PostMapping()
+    public ResponseEntity<RecipeIngredient> postRecipeIngredient(@RequestBody RecipeIngredientDTO dto) {
+    	
+    	Optional<Recipe> optionalRecipe = this.recipeService.getOne(dto.getRecipeId());
+    	if (optionalRecipe.isEmpty())
+    		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    	
+    	Optional<Ingredient> optionalIngredient = this.ingredientService.getOne(dto.getIngredientId());
+    	if (optionalIngredient.isEmpty())
+    		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    	
+    	Recipe recipe = optionalRecipe.get();
+    	Ingredient ingredient = optionalIngredient.get();
+
+    	RecipeIngredient recipeIngredient = new RecipeIngredient();
+    	recipeIngredient.setRecipe(recipe);
+    	recipeIngredient.setIngredient(ingredient);
+    	recipeIngredient.setAmount(dto.getAmount());
+    	recipeIngredient.setMetric(dto.getMetric());
+
+    	this.recipeIngredientService.createOne(recipeIngredient);
+    	
+    	return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

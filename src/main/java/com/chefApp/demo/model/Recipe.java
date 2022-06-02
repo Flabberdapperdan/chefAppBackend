@@ -10,7 +10,10 @@ public class Recipe {
         @GeneratedValue ( strategy = GenerationType.AUTO )
         long id;
 		int userId;
+
+		@Column(nullable = false, length = 100)
 		String name;
+
 		double cost;
 		double salePrice;
 
