@@ -6,12 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.chefApp.demo.DTO.RecipeIngredientDTO;
 import com.chefApp.demo.controller.IngredientService;
@@ -24,13 +19,11 @@ import com.chefApp.demo.model.RecipeIngredient;
 @RestController
 @RequestMapping("api/recipeIngredient")
 public class RecipeIngredientEndpoint {
-    @Autowired
-    RecipeIngredientService service;
+
     @Autowired
     RecipeService recipeService;
     @Autowired
     IngredientService ingredientService;
-
     @Autowired
     RecipeIngredientService recipeIngredientService;
 
@@ -40,8 +33,8 @@ public class RecipeIngredientEndpoint {
     }
 
     @GetMapping("ingredient/{ingredientId}")
-    public void getIngredients(@PathVariable long ingredientId) {
-
+    public List<RecipeIngredient> getRecipeIngredientsByIngredientId(@PathVariable long ingredientId) {
+        return this.recipeIngredientService.getByIngredientId(ingredientId);
     }
 
     @PostMapping()
@@ -64,9 +57,17 @@ public class RecipeIngredientEndpoint {
     	recipeIngredient.setAmount(dto.getAmount());
     	recipeIngredient.setMetric(dto.getMetric());
 
-    	this.recipeIngredientService.createOne(recipeIngredient);
-    	
+    	this.recipeIngredientService.create(recipeIngredient);
     	return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    public RecipeIngredient deleteRecipeIngredient(@PathVariable long id) {
+        Optional<RecipeIngredient> optionalRecipeIngredient = recipeIngredientService.getOne(id);
+        if (optionalRecipeIngredient.isPresent()) {
+            recipeIngredientService.delete(id);
+        }
+        return optionalRecipeIngredient.orElse(null);
     }
 
 }

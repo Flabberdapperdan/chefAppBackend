@@ -4,16 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.chefApp.demo.controller.RecipeService;
 import com.chefApp.demo.model.Recipe;
@@ -56,17 +47,16 @@ public class RecipeEndpoint {
     public boolean updateById(@PathVariable long id, @RequestBody Recipe input) {
         Optional<Recipe> optionalOldRecipe = this.service.getOne(id);
         if (optionalOldRecipe.isPresent()) {
-        	// Validatie doen
-
         	Recipe oldRecipe = optionalOldRecipe.get();
-        	oldRecipe.setSalePrice(id);
         	// Properties updaten
-        	
+            oldRecipe.setCost(input.getCost());
+            oldRecipe.setName(input.getName());
+            oldRecipe.setSalePrice(input.getSalePrice());
+            // Send to service layer
             this.service.update(oldRecipe);
             
             return true;
         }
-        
         return false;
     }
 
@@ -76,17 +66,12 @@ public class RecipeEndpoint {
 //    }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Recipe> deleteRecipeById(@PathVariable long id) {
-        if (id >= 0) {
-            Optional<Recipe> exists = service.getOne(id);
-            if (exists.isPresent()) {
-                service.deleteOne(id);
-                return new ResponseEntity(HttpStatus.ACCEPTED);
-            } else {
-                return new ResponseEntity(HttpStatus.NO_CONTENT);
-            }
-        } else {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    public Recipe deleteRecipeById(@PathVariable long id) {
+        Optional<Recipe> optionalRecipe = service.getOne(id);
+        if (optionalRecipe.isPresent()) {
+            service.delete(id);
         }
+        return optionalRecipe.orElse(null);
 	}
+
 }
