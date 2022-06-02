@@ -1,4 +1,4 @@
-package com.chefApp.demo.controller;
+package com.chefApp.demo.repository;
 
 import com.chefApp.demo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;

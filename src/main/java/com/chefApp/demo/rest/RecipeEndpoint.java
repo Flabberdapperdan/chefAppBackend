@@ -2,12 +2,13 @@ package com.chefApp.demo.rest;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.chefApp.demo.controller.RecipeService;
 import com.chefApp.demo.model.Recipe;
+import com.chefApp.demo.service.RecipeService;
 
 
 @RestController
@@ -15,17 +16,18 @@ import com.chefApp.demo.model.Recipe;
 public class RecipeEndpoint {
 
     @Autowired
-    RecipeService service;
+    RecipeService recipeService;
+
+    Logger logger = Logger.getLogger(RecipeEndpoint.class.getName());
 
     @GetMapping
-    public List<Recipe> getAll() {
-    	return service.getAll();
+    public List<Recipe> getAllRecipes() {
+    	return recipeService.readAll();
     }
 
     @GetMapping("{id}")
     public Recipe getRecipeById(@PathVariable long id) {
-    	return service.getOne(id).orElse(null);
-    	
+    	return recipeService.read(id).orElse(null);
 //        if(id >= 0) {
 //            Optional<Recipe> foundRecipe = service.getOne(id);
 //            if(foundRecipe.isPresent()) {
@@ -39,21 +41,22 @@ public class RecipeEndpoint {
     }
 
     @PostMapping
-    public Recipe createNewRecipe(@RequestBody Recipe recipe) {
-        return this.service.create(recipe);
+    public Recipe createRecipe(@RequestBody Recipe recipe) {
+        return recipeService.create(recipe);
     }
 
     @PutMapping("{id}")
-    public boolean updateById(@PathVariable long id, @RequestBody Recipe input) {
-        Optional<Recipe> optionalOldRecipe = this.service.getOne(id);
-        if (optionalOldRecipe.isPresent()) {
+    public boolean updateRecipeById(@PathVariable long id, @RequestBody Recipe input) {
+        Optional<Recipe> optionalOldRecipe = recipeService.read(id);
+        if (optionalOldRecipe.isPresent())
+        {
         	Recipe oldRecipe = optionalOldRecipe.get();
         	// Properties updaten
             oldRecipe.setCost(input.getCost());
             oldRecipe.setName(input.getName());
             oldRecipe.setSalePrice(input.getSalePrice());
             // Send to service layer
-            this.service.update(oldRecipe);
+            recipeService.update(oldRecipe);
             
             return true;
         }
@@ -67,9 +70,10 @@ public class RecipeEndpoint {
 
     @DeleteMapping("{id}")
     public Recipe deleteRecipeById(@PathVariable long id) {
-        Optional<Recipe> optionalRecipe = service.getOne(id);
-        if (optionalRecipe.isPresent()) {
-            service.delete(id);
+        Optional<Recipe> optionalRecipe = recipeService.read(id);
+        if (optionalRecipe.isPresent())
+        {
+            recipeService.delete(id);
         }
         return optionalRecipe.orElse(null);
 	}

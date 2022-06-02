@@ -1,4 +1,4 @@
-package com.chefApp.demo.controller;
+package com.chefApp.demo.repository;
 
 import com.chefApp.demo.model.RecipeIngredient;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +11,6 @@ public interface RecipeIngredientRepository extends JpaRepository<RecipeIngredie
 
     List<RecipeIngredient> findByRecipeId(long id);
 
-    List<RecipeIngredient> getByIngredientId(long id);
+    List<RecipeIngredient> findByIngredientId(long id);
 
 }
