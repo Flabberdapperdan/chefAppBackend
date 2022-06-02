@@ -1,33 +1,39 @@
-package com.chefApp.demo.model;
+package com.chefApp.demo.DTO;
 
-import javax.persistence.*;
-import java.util.List;
-import java.util.Set;
+import javax.persistence.Column;
 
-
-@Entity
-public class Ingredient {
-
-    // primary key    AutoIncrement
-    @Id
-    @GeneratedValue( strategy = GenerationType.AUTO)
-    private long id;
+public class RecipeIngredientSearchByRecipeDTO {
+    private long RecipeIngredientId;
     private String code;
     private String name;
+    private double amount;
+    private String metric;
     @Column(name = "grp")
     private String group;
     private double marketPrice;
 
-    //link to RecipeIngredient
-    @OneToMany(mappedBy = "ingredient")
-    List<RecipeIngredient> recipeIngredient;
-
-    public long getId() {
-        return id;
+    public double getAmount() {
+        return amount;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public String getMetric() {
+        return metric;
+    }
+
+    public void setMetric(String metric) {
+        this.metric = metric;
+    }
+
+    public long getRecipeIngredientId() {
+        return RecipeIngredientId;
+    }
+
+    public void setRecipeIngredientId(long recipeIngredientId) {
+        RecipeIngredientId = recipeIngredientId;
     }
 
     public String getCode() {
@@ -60,13 +66,5 @@ public class Ingredient {
 
     public void setMarketPrice(double marketPrice) {
         this.marketPrice = marketPrice;
-    }
-
-    public List<RecipeIngredient> getRecipeIngredient() {
-        return recipeIngredient;
-    }
-
-    public void setRecipeIngredient(List<RecipeIngredient> recipeIngredient) {
-        this.recipeIngredient = recipeIngredient;
     }
 }

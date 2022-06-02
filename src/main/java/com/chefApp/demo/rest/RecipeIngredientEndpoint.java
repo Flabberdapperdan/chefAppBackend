@@ -2,8 +2,9 @@ package com.chefApp.demo.rest;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
+import com.chefApp.demo.DTO.RecipeIngredientSearchByRecipeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ import com.chefApp.demo.service.RecipeIngredientService;
 import com.chefApp.demo.service.RecipeService;
 
 @RestController
-@RequestMapping("api/recipeIngredient")
+@RequestMapping("api/recipe-ingredient")
 public class RecipeIngredientEndpoint {
 
     @Autowired
@@ -28,11 +29,21 @@ public class RecipeIngredientEndpoint {
     @Autowired
     RecipeIngredientService recipeIngredientService;
 
-    Logger logger = Logger.getLogger(RecipeIngredientEndpoint.class.getName());
-
     @GetMapping("/recipe/{recipeId}")
-    public List<RecipeIngredient> getRecipeIngredientsByRecipeId(@PathVariable long recipeId) {
-    	return recipeIngredientService.findByRecipeId(recipeId);
+    public List<RecipeIngredientSearchByRecipeDTO> getIngredientsByRecipeId(@PathVariable long recipeId) {
+        List<RecipeIngredient> list = recipeIngredientService.findByRecipeId(recipeId);
+        return list.stream().map(entry -> {
+            RecipeIngredientSearchByRecipeDTO dto = new RecipeIngredientSearchByRecipeDTO();
+            Ingredient ingredient = entry.getIngredient();
+            dto.setRecipeIngredientId(entry.getId());
+            dto.setCode(ingredient.getCode());
+            dto.setName(ingredient.getName());
+            dto.setAmount(entry.getAmount());
+            dto.setMetric(entry.getMetric());
+            dto.setGroup(ingredient.getGroup());
+            dto.setMarketPrice(ingredient.getMarketPrice());
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     @GetMapping("ingredient/{ingredientId}")

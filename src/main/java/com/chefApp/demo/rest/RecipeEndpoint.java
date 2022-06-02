@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+import com.chefApp.demo.DTO.RecipeSendDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,21 +24,21 @@ public class RecipeEndpoint {
     @GetMapping
     public List<Recipe> getAllRecipes() {
     	return recipeService.readAll();
+
+        //this still needs the DTO!
     }
 
     @GetMapping("{id}")
-    public Recipe getRecipeById(@PathVariable long id) {
-    	return recipeService.read(id).orElse(null);
-//        if(id >= 0) {
-//            Optional<Recipe> foundRecipe = service.getOne(id);
-//            if(foundRecipe.isPresent()) {
-//                return new ResponseEntity<>(foundRecipe.get(), HttpStatus.ACCEPTED);
-//            } else {
-//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//            }
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
+    public RecipeSendDTO getRecipeById(@PathVariable long id) {
+    	Recipe recipe = recipeService.read(id).orElse(null);
+
+        RecipeSendDTO dto = new RecipeSendDTO();
+        dto.setId(recipe.getId());
+        dto.setName(recipe.getName());
+        dto.setCost(recipe.getCost());
+        dto.setSalePrice(recipe.getSalePrice());
+
+        return dto;
     }
 
     @PostMapping
