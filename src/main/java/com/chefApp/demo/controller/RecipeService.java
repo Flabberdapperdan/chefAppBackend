@@ -29,7 +29,7 @@ public class RecipeService {
    		return r.save(newRecipe);
     }
 
-    public void deleteOne(long id) {
+    public void delete(long id) {
         r.deleteById(id);    
     }
 }

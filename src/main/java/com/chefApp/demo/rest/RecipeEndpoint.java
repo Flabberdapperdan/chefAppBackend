@@ -69,7 +69,7 @@ public class RecipeEndpoint {
     public Recipe deleteRecipeById(@PathVariable long id) {
         Optional<Recipe> optionalRecipe = service.getOne(id);
         if (optionalRecipe.isPresent()) {
-            service.deleteOne(id);
+            service.delete(id);
         }
         return optionalRecipe.orElse(null);
 	}

@@ -44,7 +44,6 @@ public class RecipeIngredient {
         this.metric = metric;
     }
 
-    //getters and setters\\
     public long getId() {
         return id;
     }
