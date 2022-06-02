@@ -24,13 +24,11 @@ import com.chefApp.demo.model.RecipeIngredient;
 @RestController
 @RequestMapping("api/recipeIngredient")
 public class RecipeIngredientEndpoint {
-    @Autowired
-    RecipeIngredientService service;
+
     @Autowired
     RecipeService recipeService;
     @Autowired
     IngredientService ingredientService;
-
     @Autowired
     RecipeIngredientService recipeIngredientService;
 
@@ -40,8 +38,8 @@ public class RecipeIngredientEndpoint {
     }
 
     @GetMapping("ingredient/{ingredientId}")
-    public void getIngredients(@PathVariable long ingredientId) {
-
+    public List<RecipeIngredient> getRecipeIngredientsByIngredientId(@PathVariable long ingredientId) {
+        return this.recipeIngredientService.getByIngredientId(ingredientId);
     }
 
     @PostMapping()
@@ -64,9 +62,9 @@ public class RecipeIngredientEndpoint {
     	recipeIngredient.setAmount(dto.getAmount());
     	recipeIngredient.setMetric(dto.getMetric());
 
-    	this.recipeIngredientService.createOne(recipeIngredient);
-    	
+    	this.recipeIngredientService.create(recipeIngredient);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
+
 
 }

@@ -16,7 +16,10 @@ public class RecipeIngredientService {
 		return r.findByRecipeId(id);
 	}
 
-	public RecipeIngredient createOne(RecipeIngredient RecipeIngredient) {
+	public List<RecipeIngredient> getByIngredientId(long id) {
+		return r.getByIngredientId(id);
+	}
+	public RecipeIngredient create(RecipeIngredient RecipeIngredient) {
 		return r.save(RecipeIngredient);
 	}
 

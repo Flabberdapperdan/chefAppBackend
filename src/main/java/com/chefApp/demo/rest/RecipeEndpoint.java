@@ -76,17 +76,12 @@ public class RecipeEndpoint {
 //    }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Recipe> deleteRecipeById(@PathVariable long id) {
-        if (id >= 0) {
-            Optional<Recipe> exists = service.getOne(id);
-            if (exists.isPresent()) {
-                service.deleteOne(id);
-                return new ResponseEntity(HttpStatus.ACCEPTED);
-            } else {
-                return new ResponseEntity(HttpStatus.NO_CONTENT);
-            }
-        } else {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    public Recipe deleteRecipeById(@PathVariable long id) {
+        Optional<Recipe> optionalRecipe = service.getOne(id);
+        if (optionalRecipe.isPresent()) {
+            service.deleteOne(id);
         }
+        return optionalRecipe.orElse(null);
 	}
+
 }
