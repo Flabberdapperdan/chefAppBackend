@@ -1,6 +1,7 @@
 package com.chefApp.demo.model;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -15,8 +16,8 @@ public class Recipe {
 	@Column(nullable = false, length = 100)
 	String name;
 
-	double cost;
-	double salePrice;
+	BigDecimal cost;
+	BigDecimal salePrice;
 
 	@OneToMany(mappedBy = "recipe")
 	List<RecipeIngredient> recipeIngredient;
@@ -45,19 +46,19 @@ public class Recipe {
 		this.name = name;
 	}
 
-	public double getCost() {
+	public BigDecimal getCost() {
 		return cost;
 	}
 
-	public void setCost(double cost) {
+	public void setCost(BigDecimal cost) {
 		this.cost = cost;
 	}
 
-	public double getSalePrice() {
+	public BigDecimal getSalePrice() {
 		return salePrice;
 	}
 
-	public void setSalePrice(double salePrice) {
+	public void setSalePrice(BigDecimal salePrice) {
 		this.salePrice = salePrice;
 	}
 
