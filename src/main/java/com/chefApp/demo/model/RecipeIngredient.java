@@ -15,13 +15,9 @@ public class RecipeIngredient {
     long id;
 
     @ManyToOne
-    @MapsId("recipeId")
-    @JoinColumn(name = "recipe_id")
     Recipe recipe;
 
     @ManyToOne
-    @MapsId("ingredientId")
-    @JoinColumn(name = "ingredient_id")
     Ingredient ingredient;
 
     double amount;

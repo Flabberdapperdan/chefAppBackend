@@ -34,7 +34,7 @@ public class IngredientService {
             return new ValidationException();
         }
         if (newIngredient.getMarketPrice() > 0) {
-            oldIngredient.setCost(newIngredient.getMarketPrice());
+            oldIngredient.setMarketPrice(newIngredient.getMarketPrice());
         } else {
             return new ValidationException();
         }

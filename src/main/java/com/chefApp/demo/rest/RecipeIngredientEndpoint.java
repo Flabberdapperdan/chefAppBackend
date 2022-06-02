@@ -16,8 +16,11 @@ import com.chefApp.demo.model.Ingredient;
 import com.chefApp.demo.model.Recipe;
 import com.chefApp.demo.model.RecipeIngredient;
 
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
+
 @RestController
-@RequestMapping("api/recipeIngredient")
+@RequestMapping("api/recipe-ingredient")
 public class RecipeIngredientEndpoint {
 
     @Autowired
@@ -29,6 +32,7 @@ public class RecipeIngredientEndpoint {
 
     @GetMapping("/recipe/{recipeId}")
     public List<RecipeIngredient> getRecipeIngredientsByRecipeId(@PathVariable long recipeId) {
+        System.out.println(this.recipeIngredientService.getByRecipeId(recipeId));
     	return this.recipeIngredientService.getByRecipeId(recipeId);
     }
 
@@ -39,7 +43,10 @@ public class RecipeIngredientEndpoint {
 
     @PostMapping()
     public ResponseEntity<RecipeIngredient> postRecipeIngredient(@RequestBody RecipeIngredientDTO dto) {
-    	
+    	System.out.println("we are posting recipeIngredient");
+        System.out.println(dto.getIngredientId());
+        System.out.println(dto.getRecipeId());
+
     	Optional<Recipe> optionalRecipe = this.recipeService.getOne(dto.getRecipeId());
     	if (optionalRecipe.isEmpty())
     		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -51,6 +58,7 @@ public class RecipeIngredientEndpoint {
     	Recipe recipe = optionalRecipe.get();
     	Ingredient ingredient = optionalIngredient.get();
 
+        System.out.println("and still posting");
     	RecipeIngredient recipeIngredient = new RecipeIngredient();
     	recipeIngredient.setRecipe(recipe);
     	recipeIngredient.setIngredient(ingredient);
