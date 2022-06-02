@@ -16,6 +16,10 @@ public class Ingredient {
     private String group;
     private double marketPrice;
 
+    //link to RecipeIngredient
+    @OneToMany(mappedBy = "ingredient")
+    Set<RecipeIngredient> recipeIngredient;
+
     //getters and setters
     public long getId() {
         return id;
