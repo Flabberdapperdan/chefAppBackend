@@ -2,14 +2,14 @@ package com.chefApp.demo.rest;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpServerErrorException.NotImplemented;
 
-import com.chefApp.demo.controller.IngredientService;
 import com.chefApp.demo.model.Ingredient;
+import com.chefApp.demo.service.IngredientService;
 
 @RestController
 @RequestMapping("api/ingredients")
@@ -17,25 +17,27 @@ public class IngredientEndpoint {
 	@Autowired
 	private IngredientService ingredientService;
 
+	Logger logger = Logger.getLogger(IngredientEndpoint.class.getName());
+
 	@GetMapping
-	public List<Ingredient> getAll(){
+	public List<Ingredient> getAllIngredients(){
 		return ingredientService.readAll();
 	}
 
 	@GetMapping({"id"})
-	public Ingredient getById(@PathVariable("id") long id) {
+	public Ingredient getIngredientById(@PathVariable("id") long id) {
 		return ingredientService.read(id).orElse(null);
 	}
 				
 	@PostMapping
-	public Ingredient create(@RequestBody Ingredient ingredient){
+	public Ingredient createIngredient(@RequestBody Ingredient ingredient){
 		//Validation
 		Ingredient createdIngredient = ingredient;
 		return ingredientService.create(createdIngredient);
 	}
 	
 	@PutMapping("{id}")
-	public Ingredient updateById(@PathVariable("id") long id, @RequestBody Ingredient ingredient){
+	public Ingredient updateIngredientById(@PathVariable("id") long id, @RequestBody Ingredient ingredient){
 		Optional<Ingredient> optionalIngredient = ingredientService.read(id);
 		if(optionalIngredient.isPresent())
 		{
@@ -52,7 +54,7 @@ public class IngredientEndpoint {
 	}
 	
 	@DeleteMapping("{id}")
-	public boolean deleteById(@PathVariable("id")long id) {
+	public boolean deleteIngredientById(@PathVariable("id")long id) {
 		Optional<Ingredient> optionalIngredient = ingredientService.read(id);
 		if(optionalIngredient.isPresent())
 		{

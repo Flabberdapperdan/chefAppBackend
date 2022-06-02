@@ -1,6 +1,8 @@
-package com.chefApp.demo.controller;
+package com.chefApp.demo.service;
 
 import com.chefApp.demo.model.Ingredient;
+import com.chefApp.demo.repository.IngredientRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

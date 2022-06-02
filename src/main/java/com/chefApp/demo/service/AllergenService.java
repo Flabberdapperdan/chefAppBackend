@@ -1,4 +1,4 @@
-package com.chefApp.demo.controller;
+package com.chefApp.demo.service;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.chefApp.demo.model.Allergen;
+import com.chefApp.demo.repository.AllergenRepository;
 
 @Service
 public class AllergenService {
