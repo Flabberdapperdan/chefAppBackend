@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.chefApp.demo.model.Allergen;
-import com.chefApp.demo.model.Nutrition;
 
 import utilities.ValidationException;
 

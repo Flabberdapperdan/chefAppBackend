@@ -3,7 +3,7 @@ package com.chefApp.demo.model;
 import javax.persistence.*;
 
 @Entity
-public class IngredientNutrition {
+public class IngredientNutrient {
 
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO )
@@ -15,12 +15,11 @@ public class IngredientNutrition {
     Ingredient ingredient;
 
     @ManyToOne
-    @MapsId("nutritionId")
-    @JoinColumn(name = "nutrition_id")
-    Nutrition nutrition;
+    @MapsId("nutrientId")
+    @JoinColumn(name = "nutrient_id")
+    Nutrient nutrient;
 
-    Integer amount;
-    String metric;
+    long quantity;
 
     // getters and setters \\
     public long getId() {
@@ -39,27 +38,19 @@ public class IngredientNutrition {
         this.ingredient = ingredient;
     }
 
-    public Nutrition getNutrition() {
-        return nutrition;
+    public Nutrient getNutrition() {
+        return nutrient;
     }
 
-    public void setNutrition(Nutrition nutrition) {
-        this.nutrition = nutrition;
+    public void setNutrition(Nutrient nutrient) {
+        this.nutrient = nutrient;
     }
 
-    public Integer getAmount() {
-        return amount;
+    public long getQuantity() {
+        return quantity;
     }
 
-    public void setAmount(Integer amount) {
-        this.amount = amount;
-    }
-
-    public String getMetric() {
-        return metric;
-    }
-
-    public void setMetric(String metric) {
-        this.metric = metric;
+    public void setQuantity(long quantity) {
+        this.quantity = quantity;
     }
 }

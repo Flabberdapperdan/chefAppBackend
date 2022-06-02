@@ -22,6 +22,7 @@ public class IngredientService {
     }
 
     public Ingredient createOne(Ingredient ingredient) {
+        System.out.println(ingredient);
         return r.save(ingredient);
     }
 
@@ -32,8 +33,8 @@ public class IngredientService {
         } else {
             return new ValidationException();
         }
-        if (newIngredient.getCost() > 0) {
-            oldIngredient.setCost(newIngredient.getCost());
+        if (newIngredient.getMarketPrice() > 0) {
+            oldIngredient.setCost(newIngredient.getMarketPrice());
         } else {
             return new ValidationException();
         }
