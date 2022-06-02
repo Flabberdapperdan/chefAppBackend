@@ -24,6 +24,8 @@ public class RecipeEndpoint {
     @GetMapping
     public List<Recipe> getAllRecipes() {
     	return recipeService.readAll();
+
+        //this still needs the DTO!
     }
 
     @GetMapping("{id}")
