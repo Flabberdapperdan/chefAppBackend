@@ -6,9 +6,27 @@ public class RecipeIngredientSearchByRecipeDTO {
     private long RecipeIngredientId;
     private String code;
     private String name;
+    private double amount;
+    private String metric;
     @Column(name = "grp")
     private String group;
     private double marketPrice;
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public String getMetric() {
+        return metric;
+    }
+
+    public void setMetric(String metric) {
+        this.metric = metric;
+    }
 
     public long getRecipeIngredientId() {
         return RecipeIngredientId;

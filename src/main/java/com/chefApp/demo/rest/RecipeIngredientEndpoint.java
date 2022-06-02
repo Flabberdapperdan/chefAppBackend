@@ -2,7 +2,6 @@ package com.chefApp.demo.rest;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import com.chefApp.demo.DTO.RecipeIngredientSearchByRecipeDTO;
@@ -39,6 +38,8 @@ public class RecipeIngredientEndpoint {
             dto.setRecipeIngredientId(entry.getId());
             dto.setCode(ingredient.getCode());
             dto.setName(ingredient.getName());
+            dto.setAmount(entry.getAmount());
+            dto.setMetric(entry.getMetric());
             dto.setGroup(ingredient.getGroup());
             dto.setMarketPrice(ingredient.getMarketPrice());
             return dto;
@@ -64,7 +65,6 @@ public class RecipeIngredientEndpoint {
     	Recipe recipe = optionalRecipe.get();
     	Ingredient ingredient = optionalIngredient.get();
 
-        System.out.println("and still posting");
     	RecipeIngredient recipeIngredient = new RecipeIngredient();
     	recipeIngredient.setRecipe(recipe);
     	recipeIngredient.setIngredient(ingredient);
