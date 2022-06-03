@@ -1,6 +1,6 @@
 package com.chefApp.demo.dto;
 
-public class RecipeIngredientDTO {
+public class RecipeIngredientDto {
 
 	long recipeId;
 	long ingredientId;

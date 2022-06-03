@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.chefApp.demo.dto.RecipeSendDTO;
+import com.chefApp.demo.dto.RecipeSendDto;
 import com.chefApp.demo.model.Recipe;
 import com.chefApp.demo.service.RecipeService;
 
@@ -29,10 +29,10 @@ public class RecipeEndpoint {
     }
 
     @GetMapping("{id}")
-    public RecipeSendDTO getRecipeById(@PathVariable long id) {
+    public RecipeSendDto getRecipeById(@PathVariable long id) {
     	Recipe recipe = recipeService.read(id).orElse(null);
 
-        RecipeSendDTO dto = new RecipeSendDTO();
+        RecipeSendDto dto = new RecipeSendDto();
         dto.setId(recipe.getId());
         dto.setName(recipe.getName());
         dto.setCost(recipe.getCost());

@@ -2,7 +2,7 @@ package com.chefApp.demo.dto;
 
 import javax.persistence.Column;
 
-public class RecipeIngredientSearchByRecipeDTO {
+public class RecipeIngredientSearchByRecipeDto {
     private long RecipeIngredientId;
     private String code;
     private String name;
