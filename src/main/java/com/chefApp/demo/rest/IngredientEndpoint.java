@@ -16,7 +16,6 @@ import com.chefApp.demo.dto.CreateIngredientRequest;
 import com.chefApp.demo.dto.GetIngredientAllergenResponse;
 import com.chefApp.demo.dto.GetIngredientNutrientResponse;
 import com.chefApp.demo.dto.GetIngredientResponse;
-import com.chefApp.demo.dto.GetNutrientResponse;
 import com.chefApp.demo.dto.UpdateIngredientRequest;
 import com.chefApp.demo.model.Ingredient;
 import com.chefApp.demo.model.IngredientAllergen;
@@ -59,8 +58,7 @@ public class IngredientEndpoint {
 		Optional<Ingredient> optionalIngredient = ingredientService.read(id);
 		if(optionalIngredient.isPresent())
 		{
-			Ingredient ingredient = optionalIngredient.get();
-			return constructIngredientResponse(ingredient, includeNutrients, includeAllergens);
+			return constructIngredientResponse(optionalIngredient.get(), includeNutrients, includeAllergens);
 		}
 		else
 		{
