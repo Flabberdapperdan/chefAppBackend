@@ -10,16 +10,12 @@ public class IngredientNutrient {
     private long id;
 
     @ManyToOne
-    @MapsId("ingredientId")
-    @JoinColumn(name = "ingredient_id")
-    Ingredient ingredient;
+    private Ingredient ingredient;
 
     @ManyToOne
-    @MapsId("nutrientId")
-    @JoinColumn(name = "nutrient_id")
-    Nutrient nutrient;
+    private Nutrient nutrient;
 
-    long quantity;
+    private long quantity;
 
     // getters and setters \\
     public long getId() {
@@ -38,11 +34,11 @@ public class IngredientNutrient {
         this.ingredient = ingredient;
     }
 
-    public Nutrient getNutrition() {
+    public Nutrient getNutrient() {
         return nutrient;
     }
 
-    public void setNutrition(Nutrient nutrient) {
+    public void setNutrient(Nutrient nutrient) {
         this.nutrient = nutrient;
     }
 
