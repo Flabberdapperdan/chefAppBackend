@@ -3,10 +3,15 @@ package com.chefApp.demo.rest;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.chefApp.demo.dto.CreateNutrientRequest;
+import com.chefApp.demo.dto.GetNutrientResponse;
+import com.chefApp.demo.dto.UpdateNutrientRequest;
 import com.chefApp.demo.model.Nutrient;
 import com.chefApp.demo.service.NutrientService;
 
@@ -16,38 +21,54 @@ public class NutrientEndpoint {
 	@Autowired
 	private NutrientService nutrientService;
 
+	private ModelMapper modelMapper = new ModelMapper();
 	Logger logger = Logger.getLogger(NutrientEndpoint.class.getName());
 
 	@GetMapping
-	public List<Nutrient> getAllNutrients(){
-		return nutrientService.readAll();
+	public List<GetNutrientResponse> getAllNutrients(){
+		List<Nutrient> nutrients = nutrientService.readAll();
+		return nutrients.stream().map(nutrient -> {
+			return modelMapper.map(nutrient, GetNutrientResponse.class);
+        }).collect(Collectors.toList());
 	}
 
-	@GetMapping({"id"})
-	public Nutrient getNutrientById(@PathVariable("id") long id) {
-		return nutrientService.read(id).orElse(null);
+	@GetMapping("{id}")
+	public GetNutrientResponse getNutrientById(@PathVariable("id") long id) {
+		Optional<Nutrient> optionalNutrient = nutrientService.read(id);
+		if(optionalNutrient.isPresent())
+		{
+			return modelMapper.map(optionalNutrient.get(), GetNutrientResponse.class);
+		}
+		else
+		{
+			return null;
+		}
 	}
 				
 	@PostMapping
-	public Nutrient createNutrient(@RequestBody Nutrient nutrient){
+	public GetNutrientResponse createNutrient(@RequestBody CreateNutrientRequest nutrientRequest){
 		//Validation
-		Nutrient createdNutrient = nutrient;
-		return nutrientService.create(createdNutrient);
+		Nutrient nutrient = modelMapper.map(nutrientRequest, Nutrient.class);
+		return modelMapper.map(nutrientService.create(nutrient), GetNutrientResponse.class);
 	}
 	
 	@PutMapping("{id}")
-	public Nutrient updateNutrientById(@PathVariable("id") long id, @RequestBody Nutrient nutrient){
+	public Nutrient updateNutrientById(@PathVariable("id") long id, @RequestBody UpdateNutrientRequest nutrientRequest){
+		// add a modelmapper wrapper soon
+		modelMapper.getConfiguration().setSkipNullEnabled(true);
 		Optional<Nutrient> optionalNutrient = nutrientService.read(id);
 		if(optionalNutrient.isPresent())
 		{
 			//Validation
 			//Update properties
-			Nutrient updatedNutrient = nutrient;
-            updatedNutrient.setId(id);
-			return nutrientService.update(updatedNutrient);
+			Nutrient nutrient = optionalNutrient.get();
+			modelMapper.map(nutrientRequest, nutrient);
+			modelMapper.getConfiguration().setSkipNullEnabled(false);
+			return nutrientService.update(nutrient);
 		}
 		else
 		{
+			modelMapper.getConfiguration().setSkipNullEnabled(false);
 			return null;
 		}
 	}
