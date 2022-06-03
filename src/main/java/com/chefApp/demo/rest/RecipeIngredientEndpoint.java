@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.chefApp.demo.DTO.RecipeIngredientSearchByRecipeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.chefApp.demo.dto.RecipeIngredientDTO;
+import com.chefApp.demo.dto.RecipeIngredientDto;
+import com.chefApp.demo.dto.RecipeIngredientSearchByRecipeDto;
 import com.chefApp.demo.model.Ingredient;
 import com.chefApp.demo.model.Recipe;
 import com.chefApp.demo.model.RecipeIngredient;
@@ -30,10 +30,10 @@ public class RecipeIngredientEndpoint {
     RecipeIngredientService recipeIngredientService;
 
     @GetMapping("/recipe/{recipeId}")
-    public List<RecipeIngredientSearchByRecipeDTO> getIngredientsByRecipeId(@PathVariable long recipeId) {
+    public List<RecipeIngredientSearchByRecipeDto> getIngredientsByRecipeId(@PathVariable long recipeId) {
         List<RecipeIngredient> list = recipeIngredientService.findByRecipeId(recipeId);
         return list.stream().map(entry -> {
-            RecipeIngredientSearchByRecipeDTO dto = new RecipeIngredientSearchByRecipeDTO();
+            RecipeIngredientSearchByRecipeDto dto = new RecipeIngredientSearchByRecipeDto();
             Ingredient ingredient = entry.getIngredient();
             dto.setRecipeIngredientId(entry.getId());
             dto.setCode(ingredient.getCode());
@@ -52,7 +52,7 @@ public class RecipeIngredientEndpoint {
     }
 
     @PostMapping()
-    public ResponseEntity<RecipeIngredient> createRecipeIngredient(@RequestBody RecipeIngredientDTO dto) {
+    public ResponseEntity<RecipeIngredient> createRecipeIngredient(@RequestBody RecipeIngredientDto dto) {
     	
     	Optional<Recipe> optionalRecipe = recipeService.read(dto.getRecipeId());
     	if (optionalRecipe.isEmpty())
