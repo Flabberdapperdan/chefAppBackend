@@ -1,54 +1,97 @@
 package com.chefApp.demo.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import com.chefApp.demo.dto.CreateIngredientNutrientRequest;
+import com.chefApp.demo.dto.CreateIngredientRequest;
+import com.chefApp.demo.dto.GetIngredientAllergenResponse;
+import com.chefApp.demo.dto.GetIngredientNutrientResponse;
+import com.chefApp.demo.dto.GetIngredientResponse;
+import com.chefApp.demo.dto.GetNutrientResponse;
+import com.chefApp.demo.dto.UpdateIngredientRequest;
 import com.chefApp.demo.model.Ingredient;
+import com.chefApp.demo.model.IngredientAllergen;
+import com.chefApp.demo.model.IngredientNutrient;
+import com.chefApp.demo.model.Nutrient;
+import com.chefApp.demo.service.IngredientAllergenService;
+import com.chefApp.demo.service.IngredientNutrientService;
 import com.chefApp.demo.service.IngredientService;
+import com.chefApp.demo.service.NutrientService;
 
 @RestController
 @RequestMapping("api/ingredients")
 public class IngredientEndpoint {
 	@Autowired
 	private IngredientService ingredientService;
+	@Autowired
+	private IngredientNutrientService ingredientNutrientService;
+	@Autowired
+	private NutrientService nutrientService;
+	@Autowired
+	private IngredientAllergenService ingredientAllergenService;
 
+	private ModelMapper modelMapper = new ModelMapper();
 	Logger logger = Logger.getLogger(IngredientEndpoint.class.getName());
 
+	///
+	/// Ingredient
+	///
+
 	@GetMapping
-	public List<Ingredient> getAllIngredients(){
-		return ingredientService.readAll();
+	public List<GetIngredientResponse> getAllIngredients(@RequestParam(name = "nutrients", required = false) boolean includeNutrients, @RequestParam(name = "allergens", required = false) boolean includeAllergens){
+		List<Ingredient> ingredients = ingredientService.readAll();
+		return ingredients.stream().map(ingredient -> {
+			return constructIngredientResponse(ingredient, includeNutrients, includeAllergens);
+        }).collect(Collectors.toList());
 	}
 
-	@GetMapping({"id"})
-	public Ingredient getIngredientById(@PathVariable("id") long id) {
-		return ingredientService.read(id).orElse(null);
+	@GetMapping("{id}")
+	public GetIngredientResponse getIngredientById(@PathVariable("id") long id, @RequestParam(name = "nutrients", required = false) boolean includeNutrients, @RequestParam(name = "allergens", required = false) boolean includeAllergens) {
+		Optional<Ingredient> optionalIngredient = ingredientService.read(id);
+		if(optionalIngredient.isPresent())
+		{
+			Ingredient ingredient = optionalIngredient.get();
+			return constructIngredientResponse(ingredient, includeNutrients, includeAllergens);
+		}
+		else
+		{
+			return null;
+		}
 	}
 				
 	@PostMapping
-	public Ingredient createIngredient(@RequestBody Ingredient ingredient){
+	public GetIngredientResponse createIngredient(@RequestBody CreateIngredientRequest ingredientRequest){
 		//Validation
-		Ingredient createdIngredient = ingredient;
-		return ingredientService.create(createdIngredient);
+		Ingredient ingredient = modelMapper.map(ingredientRequest, Ingredient.class);
+		return modelMapper.map(ingredientService.create(ingredient), GetIngredientResponse.class);
 	}
 	
 	@PutMapping("{id}")
-	public Ingredient updateIngredientById(@PathVariable("id") long id, @RequestBody Ingredient ingredient){
+	public Ingredient updateIngredientById(@PathVariable("id") long id, @RequestBody UpdateIngredientRequest ingredientRequest){
+		// add a modelmapper wrapper soon
+		modelMapper.getConfiguration().setSkipNullEnabled(true);
 		Optional<Ingredient> optionalIngredient = ingredientService.read(id);
 		if(optionalIngredient.isPresent())
 		{
 			//Validation
 			//Update properties
-			Ingredient updatedIngredient = ingredient;
-            updatedIngredient.setId(id);
-			return ingredientService.update(updatedIngredient);
+			Ingredient ingredient = optionalIngredient.get();
+			modelMapper.map(ingredientRequest, ingredient);
+			modelMapper.getConfiguration().setSkipNullEnabled(false);
+			return ingredientService.update(ingredient);
 		}
 		else
 		{
+			modelMapper.getConfiguration().setSkipNullEnabled(false);
 			return null;
 		}
 	}
@@ -72,13 +115,31 @@ public class IngredientEndpoint {
     ///
 
     @GetMapping({"{id}/nutrients"})
-	public HttpStatus getIngredientNutrients(){
-        return HttpStatus.NOT_IMPLEMENTED;
+	public List<GetIngredientNutrientResponse> getIngredientNutrients(@PathVariable("id")long id){
+		List<IngredientNutrient> ingredientNutrients = ingredientNutrientService.findByIngredientId(id);
+		return ingredientNutrients.stream().map(ingredientNutrient -> {
+			GetIngredientNutrientResponse ingredientNutrientResponseDto = modelMapper.map(ingredientNutrient.getNutrient(), GetIngredientNutrientResponse.class);
+			ingredientNutrientResponseDto.setQuantity(ingredientNutrient.getQuantity());
+			return ingredientNutrientResponseDto;
+		}).collect(Collectors.toList());
 	}
 				
 	@PostMapping("{id}/nutrients")
-	public HttpStatus createIngredientNutrient(@RequestBody Ingredient ingredient){
-        return HttpStatus.NOT_IMPLEMENTED;
+	public IngredientNutrient createIngredientNutrient(@PathVariable("id")long id, @RequestBody CreateIngredientNutrientRequest ingredientNutrientRequest){
+		Optional<Ingredient> optionalIngredient = ingredientService.read(id);
+		Optional<Nutrient> optionalNutrient = nutrientService.read(ingredientNutrientRequest.getNutrientId());
+		if(optionalIngredient.isPresent() && optionalNutrient.isPresent())
+		{
+			IngredientNutrient ingredientNutrient = new IngredientNutrient();
+			ingredientNutrient.setIngredient(optionalIngredient.get());
+			ingredientNutrient.setNutrient(optionalNutrient.get());
+			ingredientNutrient.setQuantity(ingredientNutrientRequest.getQuantity());
+			return ingredientNutrientService.create(ingredientNutrient);
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	@PutMapping("{id}/nutrients")
@@ -96,12 +157,16 @@ public class IngredientEndpoint {
     ///
 
     @GetMapping({"{id}/allergens"})
-	public HttpStatus getIngredientAllergens(){
-        return HttpStatus.NOT_IMPLEMENTED;
+	public List<GetIngredientAllergenResponse> getIngredientAllergens(@PathVariable("id")long id){
+		List<IngredientAllergen> ingredientAllergens = ingredientAllergenService.findByIngredientId(id);
+		return ingredientAllergens.stream().map(ingredientAllergen -> {
+			GetIngredientAllergenResponse ingredientAllergenResponseDto = modelMapper.map(ingredientAllergen.getAllergen(), GetIngredientAllergenResponse.class);
+			return ingredientAllergenResponseDto;
+		}).collect(Collectors.toList());
 	}
 				
 	@PostMapping("{id}/allergens")
-	public HttpStatus createIngredientAllergen(@RequestBody Ingredient ingredient){
+	public HttpStatus createIngredientAllergen(@PathVariable("id")long id, @RequestBody Ingredient ingredient){
         return HttpStatus.NOT_IMPLEMENTED;
 	}
 	
@@ -113,5 +178,32 @@ public class IngredientEndpoint {
 	@DeleteMapping("{id}/allergens")
 	public HttpStatus deleteIngredientAllergen(@PathVariable("id")long id) {
         return HttpStatus.NOT_IMPLEMENTED;
+	}
+
+	///
+	/// Dto constructors
+	///
+	private GetIngredientResponse constructIngredientResponse(Ingredient ingredient, boolean includeNutrients, boolean includeAllergens)
+	{
+		GetIngredientResponse ingredientResponse = modelMapper.map(ingredient, GetIngredientResponse.class);
+		if(includeNutrients)
+		{
+			List<IngredientNutrient> ingredientNutrients = ingredientNutrientService.findByIngredientId(ingredient.getId());
+			List<GetIngredientNutrientResponse> ingredientNutrientResponses = ingredientNutrients.stream().map(ingredientNutrient -> {
+				GetIngredientNutrientResponse ingredientNutrientResponse = modelMapper.map(ingredientNutrient.getNutrient(), GetIngredientNutrientResponse.class);
+				ingredientNutrientResponse.setQuantity(ingredientNutrient.getQuantity());
+				return ingredientNutrientResponse;
+			}).collect(Collectors.toList());
+			ingredientResponse.setNutrients(ingredientNutrientResponses);
+		}
+		if(includeAllergens)
+		{
+			List<IngredientAllergen> ingredientAllergens = ingredientAllergenService.findByIngredientId(ingredient.getId());
+			List<GetIngredientAllergenResponse> ingredientAllergenResponses = ingredientAllergens.stream().map(ingredientAllergen -> {
+				return modelMapper.map(ingredientAllergen.getAllergen(), GetIngredientAllergenResponse.class);
+			}).collect(Collectors.toList());
+			ingredientResponse.setAllergens(ingredientAllergenResponses);
+		}
+		return ingredientResponse;
 	}
 }

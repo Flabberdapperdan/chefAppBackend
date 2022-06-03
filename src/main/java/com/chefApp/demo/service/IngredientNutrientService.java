@@ -25,6 +25,10 @@ public class IngredientNutrientService {
        return ingredientNutrientRepository.findById(id);
     }
 
+    public List<IngredientNutrient> findByIngredientId(long id) {
+		return ingredientNutrientRepository.findByIngredientId(id);
+	}
+
     public IngredientNutrient create(IngredientNutrient ingredientNutrient) {
         //Data Access Verification
         return ingredientNutrientRepository.save(ingredientNutrient);

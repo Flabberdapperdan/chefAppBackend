@@ -25,6 +25,10 @@ public class IngredientAllergenService {
        return ingredientAllergenRepository.findById(id);
     }
 
+    public List<IngredientAllergen> findByIngredientId(long id) {
+		return ingredientAllergenRepository.findByIngredientId(id);
+	}
+
     public IngredientAllergen create(IngredientAllergen ingredientAllergen) {
         //Data Access Verification
         return ingredientAllergenRepository.save(ingredientAllergen);

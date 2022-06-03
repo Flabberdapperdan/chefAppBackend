@@ -10,14 +10,10 @@ public class IngredientAllergen {
     private long id;
 
     @ManyToOne
-    @MapsId("ingredientId")
-    @JoinColumn(name = "ingredient_id")
-    Ingredient ingredient;
+    private Ingredient ingredient;
 
     @ManyToOne
-    @MapsId("allergenId")
-    @JoinColumn(name = "allergen_id")
-    Allergen allergen;
+    private Allergen allergen;
 
     // getters and setters \\
     public long getId() {
