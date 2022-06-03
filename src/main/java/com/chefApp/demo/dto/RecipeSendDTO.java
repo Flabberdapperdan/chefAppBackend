@@ -1,4 +1,4 @@
-package com.chefApp.demo.DTO;
+package com.chefApp.demo.dto;
 
 import javax.persistence.Column;
 import java.math.BigDecimal;

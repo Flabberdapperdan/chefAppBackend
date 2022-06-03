@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-import com.chefApp.demo.DTO.RecipeSendDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.chefApp.demo.dto.RecipeSendDTO;
 import com.chefApp.demo.model.Recipe;
 import com.chefApp.demo.service.RecipeService;
 
