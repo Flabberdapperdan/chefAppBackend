@@ -1,42 +1,72 @@
 package com.chefApp.demo.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Recipe {
 
-        @Id
-        @GeneratedValue ( strategy = GenerationType.AUTO )
-        long id;
-        String name;
+	@Id
+	@GeneratedValue ( strategy = GenerationType.AUTO )
+	long id;
+	int userId;
 
-        public long getId() {
-                return id;
-        }
+	@Column(nullable = false, length = 100)
+	String name;
 
-        public void setId(long id) {
-                this.id = id;
-        }
+	BigDecimal cost;
+	BigDecimal salePrice;
 
-        public String getName() {
-                return name;
-        }
+	@OneToMany(mappedBy = "recipe")
+	List<RecipeIngredient> recipeIngredient;
 
-        public void setName(String name) {
-                this.name = name;
-        }
+	public long getId() {
+		return id;
+	}
 
-        public int getWeight() {
-                return weight;
-        }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-        public void setWeight(int weight) {
-                this.weight = weight;
-        }
+	public int getUserId() {
+		return userId;
+	}
 
-        int weight;
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public BigDecimal getCost() {
+		return cost;
+	}
+
+	public void setCost(BigDecimal cost) {
+		this.cost = cost;
+	}
+
+	public BigDecimal getSalePrice() {
+		return salePrice;
+	}
+
+	public void setSalePrice(BigDecimal salePrice) {
+		this.salePrice = salePrice;
+	}
+
+	public List<RecipeIngredient> getRecipeIngredient() {
+		return recipeIngredient;
+	}
+
+	public void setRecipeIngredient(List<RecipeIngredient> recipeIngredient) {
+		this.recipeIngredient = recipeIngredient;
+	}
 }

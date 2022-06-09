@@ -1,32 +1,82 @@
 package com.chefApp.demo.rest;
 
-import com.chefApp.demo.controller.RecipeService;
-import com.chefApp.demo.model.Recipe;
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
+import com.chefApp.demo.dto.RecipeSendDto;
+import com.chefApp.demo.model.Recipe;
+import com.chefApp.demo.service.RecipeService;
 
 
 @RestController
+@RequestMapping("api/recipes")
 public class RecipeEndpoint {
 
     @Autowired
-    RecipeService service;
+    RecipeService recipeService;
 
-    @GetMapping("getAllRecipes")
-    public List<Recipe> firstGet() {
-        System.out.println("the first get is here");
-        Recipe r = new Recipe();
-        r.setId(1);
-        r.setName("pasta");
-        r.setWeight(100);
-        return Arrays.asList(r);
+    Logger logger = Logger.getLogger(RecipeEndpoint.class.getName());
+
+    @GetMapping
+    public List<Recipe> getAllRecipes() {
+    	return recipeService.readAll();
+
+        //this still needs the DTO!
     }
 
-    @PostMapping("createRecipe")
-    public void createRecipe(@RequestBody Recipe recipe) {
+    @GetMapping("{id}")
+    public RecipeSendDto getRecipeById(@PathVariable long id) {
+    	Recipe recipe = recipeService.read(id).orElse(null);
 
+        RecipeSendDto dto = new RecipeSendDto();
+        dto.setId(recipe.getId());
+        dto.setName(recipe.getName());
+        dto.setCost(recipe.getCost());
+        dto.setSalePrice(recipe.getSalePrice());
+
+        return dto;
     }
+
+    @PostMapping
+    public Recipe createRecipe(@RequestBody Recipe recipe) {
+        return recipeService.create(recipe);
+    }
+
+    @PutMapping("{id}")
+    public boolean updateRecipeById(@PathVariable long id, @RequestBody Recipe input) {
+        Optional<Recipe> optionalOldRecipe = recipeService.read(id);
+        if (optionalOldRecipe.isPresent())
+        {
+        	Recipe oldRecipe = optionalOldRecipe.get();
+        	// Properties updaten
+            oldRecipe.setCost(input.getCost());
+            oldRecipe.setName(input.getName());
+            oldRecipe.setSalePrice(input.getSalePrice());
+            // Send to service layer
+            recipeService.update(oldRecipe);
+            
+            return true;
+        }
+        return false;
+    }
+
+//    Je kan ook via recipe bij ingredients
+//    @GetMapping("{id}/ingredients")
+//    public ResponseEntity<RecipeIngredient> getRecipeIngredients(@PathVariable long id) {
+//    }
+
+    @DeleteMapping("{id}")
+    public Recipe deleteRecipeById(@PathVariable long id) {
+        Optional<Recipe> optionalRecipe = recipeService.read(id);
+        if (optionalRecipe.isPresent())
+        {
+            recipeService.delete(id);
+        }
+        return optionalRecipe.orElse(null);
+	}
+
 }
