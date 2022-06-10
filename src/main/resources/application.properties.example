@@ -8,6 +8,7 @@ spring.datasource.password=gdsag@#4we234fdsj
 
 #wellicht een keer naar MySQL8, want 5 is wat aan de oude kant, maar ligt er maar net aan welke DB er wodt gebruikt
 spring.jpa.database_platform=org.hibernate.dialect.MySQL5Dialect
+spring.jpa.show-sql=true
 #update create-drop
 spring.jpa.hibernate.ddl-auto=update
 
