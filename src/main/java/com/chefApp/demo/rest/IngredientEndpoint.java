@@ -8,6 +8,9 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +18,7 @@ import com.chefApp.demo.dto.CreateIngredientNutrientRequest;
 import com.chefApp.demo.dto.CreateIngredientRequest;
 import com.chefApp.demo.dto.GetIngredientAllergenResponse;
 import com.chefApp.demo.dto.GetIngredientNutrientResponse;
+import com.chefApp.demo.dto.GetIngredientPageResponse;
 import com.chefApp.demo.dto.GetIngredientResponse;
 import com.chefApp.demo.dto.UpdateIngredientRequest;
 import com.chefApp.demo.model.Ingredient;
@@ -46,11 +50,22 @@ public class IngredientEndpoint {
 	///
 
 	@GetMapping
-	public List<GetIngredientResponse> getAllIngredients(@RequestParam(name = "nutrients", required = false) boolean includeNutrients, @RequestParam(name = "allergens", required = false) boolean includeAllergens){
-		List<Ingredient> ingredients = ingredientService.readAll();
-		return ingredients.stream().map(ingredient -> {
+	public GetIngredientPageResponse getAllIngredients(
+		@RequestParam(name = "nutrients", required = false) boolean includeNutrients,
+		@RequestParam(name = "allergens", required = false) boolean includeAllergens,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "10") int size
+		){
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Ingredient> ingredientsPage = ingredientService.getAll(pageable);
+		GetIngredientPageResponse ingredientPageResponse = new GetIngredientPageResponse();
+		ingredientPageResponse.setCurrentPage(ingredientsPage.getNumber());
+		ingredientPageResponse.setTotalPages(ingredientsPage.getTotalPages());
+		ingredientPageResponse.setTotalItems(ingredientsPage.getTotalElements());
+		ingredientPageResponse.setIngredients(ingredientsPage.stream().map(ingredient -> {
 			return constructIngredientResponse(ingredient, includeNutrients, includeAllergens);
-        }).collect(Collectors.toList());
+    	}).collect(Collectors.toList()));
+		return ingredientPageResponse;
 	}
 
 	@GetMapping("{id}")
