@@ -34,5 +34,5 @@ build/
 /bin/
 /bin/
 
-#src/main/resources/application.properties.example
+#src/main/resources/application.properties
 
