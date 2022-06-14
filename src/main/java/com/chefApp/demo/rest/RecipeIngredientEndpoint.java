@@ -36,6 +36,7 @@ public class RecipeIngredientEndpoint {
             RecipeIngredientSearchByRecipeDto dto = new RecipeIngredientSearchByRecipeDto();
             Ingredient ingredient = entry.getIngredient();
             dto.setRecipeIngredientId(entry.getId());
+            System.out.println(entry.getId());
             dto.setCode(ingredient.getCode());
             dto.setName(ingredient.getName());
             dto.setAmount(entry.getAmount());
@@ -76,13 +77,14 @@ public class RecipeIngredientEndpoint {
     }
 
     @DeleteMapping("{id}")
-    public RecipeIngredient deleteRecipeIngredientById(@PathVariable long id) {
+    public boolean deleteRecipeIngredientById(@PathVariable long id) {
         Optional<RecipeIngredient> optionalRecipeIngredient = recipeIngredientService.read(id);
-        if (optionalRecipeIngredient.isPresent())
-        {
+        if (optionalRecipeIngredient.isPresent()) {
             recipeIngredientService.delete(id);
+            return true;
+        } else {
+            return false;
         }
-        return optionalRecipeIngredient.orElse(null);
     }
 
 }

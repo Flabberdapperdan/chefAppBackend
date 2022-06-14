@@ -72,8 +72,7 @@ public class RecipeEndpoint {
     @DeleteMapping("{id}")
     public Recipe deleteRecipeById(@PathVariable long id) {
         Optional<Recipe> optionalRecipe = recipeService.read(id);
-        if (optionalRecipe.isPresent())
-        {
+        if (optionalRecipe.isPresent()) {
             recipeService.delete(id);
         }
         return optionalRecipe.orElse(null);
