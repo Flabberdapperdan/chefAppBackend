@@ -36,7 +36,6 @@ public class RecipeIngredientEndpoint {
             CreateRecipeIngredientResponse dto = new CreateRecipeIngredientResponse();
             Ingredient ingredient = entry.getIngredient();
             dto.setRecipeIngredientId(entry.getId());
-            System.out.println(entry.getId());
             dto.setCode(ingredient.getCode());
             dto.setName(ingredient.getName());
             dto.setAmount(entry.getAmount());
