@@ -1,9 +1,8 @@
 package com.chefApp.demo.dto;
 
-import javax.persistence.Column;
 import java.math.BigDecimal;
 
-public class RecipeSendDto {
+public class GetRecipeResponse {
     long id;
     int userId;
     String name;
