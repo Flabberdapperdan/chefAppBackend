@@ -1,16 +1,18 @@
 package com.chefApp.demo.dto;
 
+import java.math.BigDecimal;
+
 public class CreateIngredientRequest {
-    private String code;
+    private long code;
     private String name;
     private String group;
-    private double marketPrice;
+    private BigDecimal marketprice;
 
     //getters and setters
-    public String getCode() {
+    public long getCode() {
         return code;
     }
-    public void setCode(String code) {
+    public void setCode(long code) {
         this.code = code;
     }
     public String getName() {
@@ -27,10 +29,10 @@ public class CreateIngredientRequest {
     {
         this.group = group;
     }
-    public double getMarketPrice() {
-        return marketPrice;
+    public BigDecimal getMarketprice() {
+        return marketprice;
     }
-    public void setMarketPrice(double marketPrice) {
-        this.marketPrice = marketPrice;
+    public void setMarketprice(BigDecimal marketprice) {
+        this.marketprice = marketprice;
     }
 }

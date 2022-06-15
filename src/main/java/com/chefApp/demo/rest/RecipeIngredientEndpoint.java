@@ -41,7 +41,7 @@ public class RecipeIngredientEndpoint {
             dto.setAmount(entry.getAmount());
             dto.setMetric(entry.getMetric());
             dto.setGroup(ingredient.getGroup());
-            dto.setMarketPrice(ingredient.getMarketPrice());
+            dto.setMarketprice(ingredient.getMarketprice());
             return dto;
         }).collect(Collectors.toList());
     }

@@ -10,14 +10,15 @@ public class Recipe {
 
 	@Id
 	@GeneratedValue ( strategy = GenerationType.IDENTITY )
-	long id;
-	int userId;
+	private long id;
+	private int userId;
 
 	@Column(nullable = false, length = 100)
-	String name;
+	private String name;
 
-	BigDecimal cost;
-	BigDecimal salePrice;
+	private BigDecimal cost;
+	@Column(name = "sale_price")
+    private BigDecimal saleprice;
 
 	@OneToMany(mappedBy = "recipe")
 	List<RecipeIngredient> recipeIngredient;
@@ -54,12 +55,12 @@ public class Recipe {
 		this.cost = cost;
 	}
 
-	public BigDecimal getSalePrice() {
-		return salePrice;
+	public BigDecimal getSaleprice() {
+		return saleprice;
 	}
 
-	public void setSalePrice(BigDecimal salePrice) {
-		this.salePrice = salePrice;
+	public void setSaleprice(BigDecimal saleprice) {
+		this.saleprice = saleprice;
 	}
 
 	public List<RecipeIngredient> getRecipeIngredient() {

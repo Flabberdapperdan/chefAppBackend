@@ -1,6 +1,8 @@
 package com.chefApp.demo.model;
 
 import javax.persistence.*;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -12,11 +14,12 @@ public class Ingredient {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private long id;
-    private String code;
+    private long code;
     private String name;
     @Column(name = "grp")
     private String group;
-    private double marketPrice;
+    @Column(name = "market_price")
+    private BigDecimal marketprice;
 
     //link to RecipeIngredient
     @OneToMany(mappedBy = "ingredient")
@@ -30,11 +33,11 @@ public class Ingredient {
         this.id = id;
     }
 
-    public String getCode() {
+    public long getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(long code) {
         this.code = code;
     }
 
@@ -54,12 +57,12 @@ public class Ingredient {
         this.group = group;
     }
 
-    public double getMarketPrice() {
-        return marketPrice;
+    public BigDecimal getMarketprice() {
+        return marketprice;
     }
 
-    public void setMarketPrice(double marketPrice) {
-        this.marketPrice = marketPrice;
+    public void setMarketprice(BigDecimal marketprice) {
+        this.marketprice = marketprice;
     }
 
     public List<RecipeIngredient> getRecipeIngredient() {
