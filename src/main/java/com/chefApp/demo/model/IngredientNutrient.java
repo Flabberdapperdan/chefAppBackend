@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class IngredientNutrient {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.AUTO )
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     private long id;
 
     @ManyToOne
@@ -15,7 +15,7 @@ public class IngredientNutrient {
     @ManyToOne
     private Nutrient nutrient;
 
-    private long quantity;
+    private double quantity;
 
     // getters and setters \\
     public long getId() {
@@ -42,11 +42,11 @@ public class IngredientNutrient {
         this.nutrient = nutrient;
     }
 
-    public long getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(long quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
 }

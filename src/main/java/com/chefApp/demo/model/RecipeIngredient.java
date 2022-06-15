@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class RecipeIngredient {
     @Id
-    @GeneratedValue( strategy = GenerationType.AUTO )
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     long id;
 
     @ManyToOne
