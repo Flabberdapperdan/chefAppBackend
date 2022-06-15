@@ -4,6 +4,9 @@ import com.chefApp.demo.model.Ingredient;
 import com.chefApp.demo.repository.IngredientRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +20,8 @@ public class IngredientService {
 
     Logger logger = Logger.getLogger(IngredientService.class.getName());
 
-    public List<Ingredient> readAll() {
-        return ingredientRepository.findAll();
+    public Page<Ingredient> getAll(Pageable pageable) {
+        return ingredientRepository.findAll(pageable);
     }
 
     public Optional<Ingredient> read(long id) {
