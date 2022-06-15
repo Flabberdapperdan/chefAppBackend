@@ -2,6 +2,8 @@ package com.chefApp.demo.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.math.BigDecimal;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,8 +25,8 @@ public class IngredientTest {
 	
 	@Test
 	public void testSetAndGetPrice() {
-		this.ingredient.setMarketPrice(15.0);
-		assertEquals(15.0, ingredient.getMarketPrice());
+		this.ingredient.setMarketprice(BigDecimal.valueOf(15.0));
+		assertEquals(BigDecimal.valueOf(15.0), ingredient.getMarketprice());
 	}
 
 }

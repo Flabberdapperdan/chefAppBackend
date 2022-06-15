@@ -7,10 +7,10 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 public class GetIngredientResponse {
     private long id;
-    private String code;
+    private long code;
     private String name;
     private String group;
-    private double marketPrice;
+    private double marketprice;
 
     @JsonInclude(Include.NON_NULL)
  	private List<GetIngredientNutrientResponse> nutrients;
@@ -24,10 +24,10 @@ public class GetIngredientResponse {
     public void setId(long id) {
         this.id = id;
     }
-    public String getCode() {
+    public long getCode() {
         return code;
     }
-    public void setCode(String code) {
+    public void setCode(long code) {
         this.code = code;
     }
     public String getName() {
@@ -44,11 +44,11 @@ public class GetIngredientResponse {
     {
         this.group = group;
     }
-    public double getMarketPrice() {
-        return marketPrice;
+    public double getMarketprice() {
+        return marketprice;
     }
-    public void setMarketPrice(double marketPrice) {
-        this.marketPrice = marketPrice;
+    public void setMarketprice(double marketprice) {
+        this.marketprice = marketprice;
     }
     public List<GetIngredientNutrientResponse> getNutrients() {
         return nutrients;

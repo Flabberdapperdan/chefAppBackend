@@ -29,7 +29,7 @@ public class RecipeEndpoint {
             dto.setUserId(recipe.getUserId());
             dto.setName(recipe.getName());
             dto.setCost(recipe.getCost());
-            dto.setSalePrice(recipe.getSalePrice());
+            dto.setSaleprice(recipe.getSaleprice());
             return dto;
         }).collect(Collectors.toList());
     }
@@ -42,7 +42,7 @@ public class RecipeEndpoint {
         dto.setId(recipe.getId());
         dto.setName(recipe.getName());
         dto.setCost(recipe.getCost());
-        dto.setSalePrice(recipe.getSalePrice());
+        dto.setSaleprice(recipe.getSaleprice());
 
         return dto;
     }
@@ -60,7 +60,7 @@ public class RecipeEndpoint {
         	// Properties updaten
             oldRecipe.setCost(input.getCost());
             oldRecipe.setName(input.getName());
-            oldRecipe.setSalePrice(input.getSalePrice());
+            oldRecipe.setSaleprice(input.getSaleprice());
             // Send to service layer
             recipeService.update(oldRecipe);
             
