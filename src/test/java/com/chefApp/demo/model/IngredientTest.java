@@ -26,7 +26,7 @@ public class IngredientTest {
 	@Test
 	public void testSetAndGetPrice() {
 		this.ingredient.setMarketprice(BigDecimal.valueOf(15.0));
-		assertEquals(15.0, ingredient.getMarketprice());
+		assertEquals(BigDecimal.valueOf(15.0), ingredient.getMarketprice());
 	}
 
 }
