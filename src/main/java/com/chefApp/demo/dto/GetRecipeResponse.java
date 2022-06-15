@@ -7,7 +7,7 @@ public class GetRecipeResponse {
     int userId;
     String name;
     BigDecimal cost;
-    BigDecimal salePrice;
+    BigDecimal saleprice;
 
     public long getId() {
         return id;
@@ -41,11 +41,11 @@ public class GetRecipeResponse {
         this.cost = cost;
     }
 
-    public BigDecimal getSalePrice() {
-        return salePrice;
+    public BigDecimal getSaleprice() {
+        return saleprice;
     }
 
-    public void setSalePrice(BigDecimal salePrice) {
-        this.salePrice = salePrice;
+    public void setSaleprice(BigDecimal saleprice) {
+        this.saleprice = saleprice;
     }
 }

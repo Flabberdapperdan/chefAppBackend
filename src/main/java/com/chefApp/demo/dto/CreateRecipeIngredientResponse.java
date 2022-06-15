@@ -1,16 +1,18 @@
 package com.chefApp.demo.dto;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 
 public class CreateRecipeIngredientResponse {
     private long RecipeIngredientId;
-    private String code;
+    private long code;
     private String name;
     private double amount;
     private String metric;
     @Column(name = "grp")
     private String group;
-    private double marketPrice;
+    private BigDecimal marketprice;
 
     public double getAmount() {
         return amount;
@@ -36,11 +38,11 @@ public class CreateRecipeIngredientResponse {
         RecipeIngredientId = recipeIngredientId;
     }
 
-    public String getCode() {
+    public long getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(long code) {
         this.code = code;
     }
 
@@ -60,11 +62,11 @@ public class CreateRecipeIngredientResponse {
         this.group = group;
     }
 
-    public double getMarketPrice() {
-        return marketPrice;
+    public BigDecimal getMarketprice() {
+        return marketprice;
     }
 
-    public void setMarketPrice(double marketPrice) {
-        this.marketPrice = marketPrice;
+    public void setMarketprice(BigDecimal marketprice) {
+        this.marketprice = marketprice;
     }
 }

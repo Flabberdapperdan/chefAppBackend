@@ -7,10 +7,12 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.AUTO )
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     private long id;
     private String name;
-    private String userName;
+
+    @Column(name = "user_name")
+    private String username;
 
     // getters and setters \\
     public long getId() {
@@ -29,12 +31,12 @@ public class User {
         this.name = name;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
 }
