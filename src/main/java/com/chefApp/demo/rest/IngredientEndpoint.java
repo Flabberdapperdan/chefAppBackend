@@ -23,10 +23,12 @@ import org.springframework.web.bind.annotation.*;
 
 import com.chefApp.demo.dto.CreateIngredientNutrientRequest;
 import com.chefApp.demo.dto.CreateIngredientRequest;
+import com.chefApp.demo.dto.DeleteIngredientNutrientRequest;
 import com.chefApp.demo.dto.GetIngredientAllergenResponse;
 import com.chefApp.demo.dto.GetIngredientNutrientResponse;
 import com.chefApp.demo.dto.GetIngredientPageResponse;
 import com.chefApp.demo.dto.GetIngredientResponse;
+import com.chefApp.demo.dto.UpdateIngredientNutrientRequest;
 import com.chefApp.demo.dto.UpdateIngredientRequest;
 import com.chefApp.demo.model.Ingredient;
 import com.chefApp.demo.model.IngredientAllergen;
@@ -49,21 +51,8 @@ public class IngredientEndpoint {
 	@Autowired
 	private IngredientAllergenService ingredientAllergenService;
 
-	private ModelMapper modelMapper;
+	private ModelMapper modelMapper = new ModelMapper();
 	Logger logger = Logger.getLogger(IngredientEndpoint.class.getName());
-
-	@Autowired
-	public IngredientEndpoint()
-	{
-		this.modelMapper = new ModelMapper();	
-		this.modelMapper.addMappings(updateIngredientMap);
-	}
-
-	PropertyMap<UpdateIngredientRequest, Ingredient> updateIngredientMap = new PropertyMap<UpdateIngredientRequest, Ingredient>(){
-		protected void configure(){
-			skip().setIngredientNutrients(null);
-		}
-	};
 
 	///
 	/// Ingredient
@@ -111,7 +100,7 @@ public class IngredientEndpoint {
 	}
 	
 	@PutMapping("{id}")
-	public Ingredient updateIngredientById(@PathVariable("id") long id, @RequestBody UpdateIngredientRequest ingredientRequest){
+	public GetIngredientResponse updateIngredientById(@PathVariable("id") long id, @RequestBody UpdateIngredientRequest ingredientRequest){
 		// add a modelmapper wrapper soon
 		modelMapper.getConfiguration().setSkipNullEnabled(true);
 		Optional<Ingredient> optionalIngredient = ingredientService.read(id);
@@ -122,7 +111,7 @@ public class IngredientEndpoint {
 			Ingredient ingredient = optionalIngredient.get();
 			modelMapper.map(ingredientRequest, ingredient);
 			modelMapper.getConfiguration().setSkipNullEnabled(false);
-			return ingredientService.update(ingredient);
+			return modelMapper.map(ingredientService.update(ingredient), GetIngredientResponse.class);
 		}
 		else
 		{
@@ -161,7 +150,7 @@ public class IngredientEndpoint {
 	}
 				
 	@PostMapping("{id}/nutrients")
-	public IngredientNutrient createIngredientNutrient(@PathVariable("id")long id, @RequestBody CreateIngredientNutrientRequest ingredientNutrientRequest){
+	public GetIngredientNutrientResponse createIngredientNutrient(@PathVariable("id")long id, @RequestBody CreateIngredientNutrientRequest ingredientNutrientRequest){
 		Optional<Ingredient> optionalIngredient = ingredientService.read(id);
 		Optional<Nutrient> optionalNutrient = nutrientService.read(ingredientNutrientRequest.getNutrientId());
 		if(optionalIngredient.isPresent() && optionalNutrient.isPresent())
@@ -170,7 +159,7 @@ public class IngredientEndpoint {
 			ingredientNutrient.setIngredient(optionalIngredient.get());
 			ingredientNutrient.setNutrient(optionalNutrient.get());
 			ingredientNutrient.setQuantity(ingredientNutrientRequest.getQuantity());
-			return ingredientNutrientService.create(ingredientNutrient);
+			return modelMapper.map(ingredientNutrientService.create(ingredientNutrient), GetIngredientNutrientResponse.class);
 		}
 		else
 		{
@@ -179,13 +168,37 @@ public class IngredientEndpoint {
 	}
 	
 	@PutMapping("{id}/nutrients")
-	public HttpStatus updateIngredientNutrient(@PathVariable("id") long id, @RequestBody Ingredient ingredient){
-        return HttpStatus.NOT_IMPLEMENTED;
+	public GetIngredientNutrientResponse updateIngredientNutrient(@PathVariable("id") long id, @RequestBody UpdateIngredientNutrientRequest ingredientNutrientRequest){
+		Optional<Ingredient> optionalIngredient = ingredientService.read(id);
+		Optional<Nutrient> optionalNutrient = nutrientService.read(ingredientNutrientRequest.getNutrientId());
+		Optional<IngredientNutrient> optionalIngredientNutrient = ingredientNutrientService.read(ingredientNutrientRequest.getJoinId());
+		if(optionalIngredient.isPresent() && optionalNutrient.isPresent() && optionalIngredientNutrient.isPresent())
+		{
+			IngredientNutrient ingredientNutrient = optionalIngredientNutrient.get();
+			ingredientNutrient.setIngredient(optionalIngredient.get());
+			ingredientNutrient.setNutrient(optionalNutrient.get());
+			ingredientNutrient.setQuantity(ingredientNutrientRequest.getQuantity());
+			return modelMapper.map(ingredientNutrientService.update(ingredientNutrient), GetIngredientNutrientResponse.class);
+		}
+		else
+		{
+			modelMapper.getConfiguration().setSkipNullEnabled(false);
+			return null;
+		}
 	}
 	
 	@DeleteMapping("{id}/nutrients")
-	public HttpStatus deleteIngredientNutrient(@PathVariable("id")long id) {
-        return HttpStatus.NOT_IMPLEMENTED;
+	public boolean deleteIngredientNutrient(@PathVariable("id")long id, @RequestBody DeleteIngredientNutrientRequest ingredientNutrientRequest) {
+		Optional<IngredientNutrient> optionalIngredientNutrient = ingredientNutrientService.read(ingredientNutrientRequest.getJoinId());
+		if(optionalIngredientNutrient.isPresent())
+		{
+			ingredientNutrientService.delete(optionalIngredientNutrient.get().getId());
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
     ///
