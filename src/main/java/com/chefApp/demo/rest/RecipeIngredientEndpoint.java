@@ -52,15 +52,15 @@ public class RecipeIngredientEndpoint {
     }
 
     @PostMapping()
-    public ResponseEntity<RecipeIngredient> createRecipeIngredient(@RequestBody CreateRecipeIngredientRequest dto) {
+    public boolean createRecipeIngredient(@RequestBody CreateRecipeIngredientRequest dto) {
     	
     	Optional<Recipe> optionalRecipe = recipeService.read(dto.getRecipeId());
     	if (optionalRecipe.isEmpty())
-    		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    		return false;
     	
     	Optional<Ingredient> optionalIngredient = ingredientService.read(dto.getIngredientId());
     	if (optionalIngredient.isEmpty())
-    		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    		return false;
     	
     	Recipe recipe = optionalRecipe.get();
     	Ingredient ingredient = optionalIngredient.get();
@@ -72,7 +72,7 @@ public class RecipeIngredientEndpoint {
     	recipeIngredient.setMetric(dto.getMetric());
 
     	recipeIngredientService.create(recipeIngredient);
-    	return new ResponseEntity<>(HttpStatus.OK);
+    	return true;
     }
 
     @DeleteMapping("{id}")
