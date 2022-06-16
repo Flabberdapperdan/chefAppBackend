@@ -6,7 +6,12 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import javax.xml.transform.Source;
+
+import org.hibernate.sql.Update;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -44,8 +49,21 @@ public class IngredientEndpoint {
 	@Autowired
 	private IngredientAllergenService ingredientAllergenService;
 
-	private ModelMapper modelMapper = new ModelMapper();
+	private ModelMapper modelMapper;
 	Logger logger = Logger.getLogger(IngredientEndpoint.class.getName());
+
+	@Autowired
+	public IngredientEndpoint()
+	{
+		this.modelMapper = new ModelMapper();	
+		this.modelMapper.addMappings(updateIngredientMap);
+	}
+
+	PropertyMap<UpdateIngredientRequest, Ingredient> updateIngredientMap = new PropertyMap<UpdateIngredientRequest, Ingredient>(){
+		protected void configure(){
+			skip().setIngredientNutrients(null);
+		}
+	};
 
 	///
 	/// Ingredient
@@ -136,6 +154,7 @@ public class IngredientEndpoint {
 		List<IngredientNutrient> ingredientNutrients = ingredientNutrientService.findByIngredientId(id);
 		return ingredientNutrients.stream().map(ingredientNutrient -> {
 			GetIngredientNutrientResponse ingredientNutrientResponseDto = modelMapper.map(ingredientNutrient.getNutrient(), GetIngredientNutrientResponse.class);
+			ingredientNutrientResponseDto.setJoinId(ingredientNutrient.getId());
 			ingredientNutrientResponseDto.setQuantity(ingredientNutrient.getQuantity());
 			return ingredientNutrientResponseDto;
 		}).collect(Collectors.toList());
@@ -208,6 +227,7 @@ public class IngredientEndpoint {
 			List<IngredientNutrient> ingredientNutrients = ingredientNutrientService.findByIngredientId(ingredient.getId());
 			List<GetIngredientNutrientResponse> ingredientNutrientResponses = ingredientNutrients.stream().map(ingredientNutrient -> {
 				GetIngredientNutrientResponse ingredientNutrientResponse = modelMapper.map(ingredientNutrient.getNutrient(), GetIngredientNutrientResponse.class);
+				ingredientNutrientResponse.setJoinId(ingredientNutrient.getId());
 				ingredientNutrientResponse.setQuantity(ingredientNutrient.getQuantity());
 				return ingredientNutrientResponse;
 			}).collect(Collectors.toList());
