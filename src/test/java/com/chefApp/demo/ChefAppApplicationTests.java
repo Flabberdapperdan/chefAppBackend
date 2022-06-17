@@ -9,5 +9,4 @@ class ChefAppApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
