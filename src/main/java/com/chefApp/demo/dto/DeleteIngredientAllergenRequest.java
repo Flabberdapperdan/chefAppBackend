@@ -1,6 +1,6 @@
 package com.chefApp.demo.dto;
 
-public class DeleteIngredientNutrientRequest {
+public class DeleteIngredientAllergenRequest {
     private long id;
 
     public long getId() {
