@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import com.chefApp.demo.dto.CreateAllergenRequest;
@@ -46,6 +47,7 @@ public class AllergenEndpoint {
 	}
 				
 	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
 	public GetAllergenResponse createAllergen(@RequestBody CreateAllergenRequest allergenRequest){
 		//Validation
 		Allergen allergen = modelMapper.map(allergenRequest, Allergen.class);

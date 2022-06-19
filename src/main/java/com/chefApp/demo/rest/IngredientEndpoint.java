@@ -30,7 +30,6 @@ import com.chefApp.demo.dto.GetIngredientAllergenResponse;
 import com.chefApp.demo.dto.GetIngredientNutrientResponse;
 import com.chefApp.demo.dto.GetIngredientPageResponse;
 import com.chefApp.demo.dto.GetIngredientResponse;
-import com.chefApp.demo.dto.GetNutrientResponse;
 import com.chefApp.demo.dto.UpdateIngredientAllergenRequest;
 import com.chefApp.demo.dto.UpdateIngredientNutrientRequest;
 import com.chefApp.demo.dto.UpdateIngredientRequest;
@@ -101,6 +100,7 @@ public class IngredientEndpoint {
 	}
 				
 	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
 	public GetIngredientResponse createIngredient(@RequestBody CreateIngredientRequest ingredientRequest){
 		//Validation
 		Ingredient ingredient = modelMapper.map(ingredientRequest, Ingredient.class);
@@ -154,6 +154,7 @@ public class IngredientEndpoint {
 	}
 				
 	@PostMapping("{ingredientId}/nutrients/{nutrientId}")
+	@ResponseStatus(HttpStatus.CREATED)
 	public GetIngredientNutrientResponse createIngredientNutrient(@PathVariable("ingredientId") long ingredientId, @PathVariable("nutrientId") long nutrientId, @RequestBody CreateIngredientNutrientRequest ingredientNutrientRequest){
 		Optional<Ingredient> optionalIngredient = ingredientService.read(ingredientId);
 		Optional<Nutrient> optionalNutrient = nutrientService.read(nutrientId);
@@ -228,6 +229,7 @@ public class IngredientEndpoint {
 	}
 				
 	@PostMapping("{ingredientId}/allergens/{allergenId}")
+	@ResponseStatus(HttpStatus.CREATED)
 	public GetIngredientAllergenResponse createIngredientAllergen(@PathVariable("ingredientId") long ingredientId, @PathVariable("allergenId") long allergenId, @RequestBody CreateIngredientAllergenRequest ingredientAllergenRequest){
 		Optional<Ingredient> optionalIngredient = ingredientService.read(ingredientId);
 		Optional<Allergen> optionalAllergen = allergenService.read(allergenId);
