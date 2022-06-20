@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.logging.Logger;
+
+import javax.transaction.Transactional;
+
 import java.util.Optional;
 
 @Service
@@ -29,15 +32,19 @@ public class IngredientNutrientService {
 		return ingredientNutrientRepository.findByIngredientId(id);
 	}
 
+    @Transactional
     public IngredientNutrient create(IngredientNutrient ingredientNutrient) {
         //Data Access Verification
         return ingredientNutrientRepository.save(ingredientNutrient);
     }
 
+    @Transactional
     public IngredientNutrient update(IngredientNutrient ingredientNutrient) {
         //Data Access Verification
         return ingredientNutrientRepository.save(ingredientNutrient);
     }
+
+    @Transactional
     public void delete(long id) {
         ingredientNutrientRepository.deleteById(id);
     }
