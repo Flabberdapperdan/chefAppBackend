@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,16 +37,19 @@ public class RecipeIngredientService {
 		return recipeIngredientRepository.findByIngredientId(id);
 	}
 
+	@Transactional
 	public RecipeIngredient create(RecipeIngredient recipeIngredient) {
 		//Data Access Verification
 		return recipeIngredientRepository.save(recipeIngredient);
 	}
 
+	@Transactional
 	public RecipeIngredient update(RecipeIngredient recipeIngredient) {
     	// Data Access Verification
    		return recipeIngredientRepository.save(recipeIngredient);
     }
 
+	@Transactional
 	public void delete(long id) {
 		recipeIngredientRepository.deleteById(id);
 	}

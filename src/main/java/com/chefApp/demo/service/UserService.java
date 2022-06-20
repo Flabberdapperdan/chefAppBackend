@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+import javax.transaction.Transactional;
+
 @Service
 public class UserService {
     @Autowired
@@ -27,17 +29,20 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    @Transactional
     public User create(User user) {
         //Data Access Verification
         return userRepository.save(user);
     }
 
+    @Transactional
     public User update(User user)
     {
         //Data Access Verification
         return userRepository.save(user);
     }
 
+    @Transactional
     public void delete(long id) {
         userRepository.deleteById(id);
     }
