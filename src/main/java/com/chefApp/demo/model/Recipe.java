@@ -20,7 +20,7 @@ public class Recipe {
 	@Column(name = "sale_price")
     private BigDecimal saleprice;
 
-	@OneToMany(mappedBy = "recipe")
+	@OneToMany(mappedBy = "recipe", cascade = CascadeType.REMOVE)
 	List<RecipeIngredient> recipeIngredient;
 
 	public long getId() {

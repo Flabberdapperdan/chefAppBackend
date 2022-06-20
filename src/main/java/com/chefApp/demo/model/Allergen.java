@@ -1,10 +1,14 @@
 package com.chefApp.demo.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -18,6 +22,10 @@ public class Allergen {
 	private String code;
 	@Column(nullable = false, length = 100)
 	private String name;
+
+	//link to IngredientAllergen
+	@OneToMany(mappedBy = "allergen", cascade = CascadeType.REMOVE)
+	List<IngredientAllergen> ingredientAllergens;
 
 	public long getId() {
 		return id;

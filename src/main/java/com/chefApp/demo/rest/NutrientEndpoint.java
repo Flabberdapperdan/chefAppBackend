@@ -7,9 +7,16 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import com.chefApp.demo.dto.CreateNutrientRequest;
+import com.chefApp.demo.dto.GetNutrientPageResponse;
 import com.chefApp.demo.dto.GetNutrientResponse;
 import com.chefApp.demo.dto.UpdateNutrientRequest;
 import com.chefApp.demo.model.Nutrient;
@@ -25,11 +32,22 @@ public class NutrientEndpoint {
 	Logger logger = Logger.getLogger(NutrientEndpoint.class.getName());
 
 	@GetMapping
-	public List<GetNutrientResponse> getAllNutrients(){
-		List<Nutrient> nutrients = nutrientService.readAll();
-		return nutrients.stream().map(nutrient -> {
+	public GetNutrientPageResponse getAllNutrients(
+		@RequestParam(value="page", defaultValue = "0") int page,
+		@RequestParam(value="size", defaultValue = "10") int size,
+		@RequestParam(value="sort_by", defaultValue = "id") String sortBy,
+		@RequestParam(value="order_by", defaultValue = "asc") String orderBy 
+		){
+		Pageable pageable = PageRequest.of(page, size, Sort.by(Direction.valueOf(orderBy.toUpperCase()), sortBy));
+		Page<Nutrient> nutrientsPage = nutrientService.getAll(pageable);
+		GetNutrientPageResponse nutrientPageResponse = new GetNutrientPageResponse();
+		nutrientPageResponse.setCurrentPage(nutrientsPage.getNumber());
+		nutrientPageResponse.setTotalPages(nutrientsPage.getTotalPages());
+		nutrientPageResponse.setTotalItems(nutrientsPage.getTotalElements());
+		nutrientPageResponse.setNutrients(nutrientsPage.stream().map(nutrient -> {
 			return modelMapper.map(nutrient, GetNutrientResponse.class);
-        }).collect(Collectors.toList());
+    	}).collect(Collectors.toList()));
+		return nutrientPageResponse;
 	}
 
 	@GetMapping("{id}")
@@ -46,6 +64,7 @@ public class NutrientEndpoint {
 	}
 				
 	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
 	public GetNutrientResponse createNutrient(@RequestBody CreateNutrientRequest nutrientRequest){
 		//Validation
 		Nutrient nutrient = modelMapper.map(nutrientRequest, Nutrient.class);

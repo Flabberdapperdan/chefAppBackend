@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import com.chefApp.demo.dto.GetRecipeResponse;
@@ -48,6 +49,7 @@ public class RecipeEndpoint {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Recipe createRecipe(@RequestBody Recipe recipe) {
         return recipeService.create(recipe);
     }
