@@ -1,6 +1,10 @@
 package com.chefApp.demo.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -16,11 +20,15 @@ public class Ingredient {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private long id;
+    @Min(value = 0, message= "Code must be a positive number.")
     private long code;
+    @NotBlank(message = "Name is required.")
     private String name;
     @Column(name = "grp")
+    @NotBlank(message = "Group is required.")
     private String group;
     @Column(name = "market_price")
+    @DecimalMin(value = "0.0", message= "Market Price must be a positive number.")
     private BigDecimal marketprice;
     
     //link to RecipeIngredient
