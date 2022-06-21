@@ -1,9 +1,13 @@
 package com.chefApp.demo.rest;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import javax.validation.ConstraintViolationException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,5 +108,21 @@ public class NutrientEndpoint {
 		{
 			return false;
 		}
+	}
+
+	///
+	/// Validation Exception Handler
+	///
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(ConstraintViolationException.class)
+	public Map<String, String> handleValidationExceptions(
+		ConstraintViolationException ex) {
+		Map<String, String> errors = new HashMap<>();
+		ex.getConstraintViolations().forEach((violation) -> {
+			String fieldName = violation.getPropertyPath().toString();
+			String errorMessage = violation.getConstraintDescriptor().getMessageTemplate();
+			errors.put(fieldName, errorMessage);
+		});
+		return errors;
 	}
 }

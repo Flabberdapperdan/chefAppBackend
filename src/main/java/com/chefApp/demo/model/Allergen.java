@@ -18,9 +18,9 @@ public class Allergen {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(nullable = false, length = 100)
+	@Column()
 	private String code;
-	@Column(nullable = false, length = 100)
+	@Column()
 	private String name;
 
 	//link to IngredientAllergen

@@ -1,11 +1,15 @@
 package com.chefApp.demo.rest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 import javax.xml.transform.Source;
 
 import org.hibernate.sql.Update;
@@ -101,7 +105,7 @@ public class IngredientEndpoint {
 				
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public GetIngredientResponse createIngredient(@RequestBody CreateIngredientRequest ingredientRequest){
+	public GetIngredientResponse createIngredient(@Valid @RequestBody CreateIngredientRequest ingredientRequest){
 		//Validation
 		Ingredient ingredient = modelMapper.map(ingredientRequest, Ingredient.class);
 		return modelMapper.map(ingredientService.create(ingredient), GetIngredientResponse.class);
@@ -312,5 +316,21 @@ public class IngredientEndpoint {
 			ingredientResponse.setAllergens(ingredientAllergenResponses);
 		}
 		return ingredientResponse;
+	}
+
+	///
+	/// Validation Exception Handler
+	///
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(ConstraintViolationException.class)
+	public Map<String, String> handleValidationExceptions(
+		ConstraintViolationException ex) {
+		Map<String, String> errors = new HashMap<>();
+		ex.getConstraintViolations().forEach((violation) -> {
+			String fieldName = violation.getPropertyPath().toString();
+			String errorMessage = violation.getConstraintDescriptor().getMessageTemplate();
+			errors.put(fieldName, errorMessage);
+		});
+		return errors;
 	}
 }
