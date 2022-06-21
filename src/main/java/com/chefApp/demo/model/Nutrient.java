@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Nutrient {
@@ -17,9 +18,12 @@ public class Nutrient {
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private long id;
 	private String code;
+	@NotBlank(message = "Name is required.")
     private String name;
 	@Column(name = "grp")
+	@NotBlank(message = "Group is required.")
 	private String group;
+	@NotBlank(message = "Unit is required.")
 	private String unit;
 
 	//link to IngredientNutrient

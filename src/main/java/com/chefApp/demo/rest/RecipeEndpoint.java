@@ -1,5 +1,6 @@
 package com.chefApp.demo.rest;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.chefApp.demo.dto.GetRecipeResponse;
 import com.chefApp.demo.model.Recipe;
+import com.chefApp.demo.model.RecipeIngredient;
 import com.chefApp.demo.service.RecipeService;
 
 
@@ -29,7 +31,11 @@ public class RecipeEndpoint {
             dto.setId(recipe.getId());
             dto.setUserId(recipe.getUserId());
             dto.setName(recipe.getName());
-            dto.setCost(recipe.getCost());
+            BigDecimal cost = BigDecimal.valueOf(0);
+            for(RecipeIngredient recipeIngredient : recipe.getRecipeIngredient()) {
+                cost = cost.add(recipeIngredient.getIngredient().getMarketprice().multiply(BigDecimal.valueOf(recipeIngredient.getAmount())));
+            }
+            dto.setCost(cost);
             dto.setSaleprice(recipe.getSaleprice());
             return dto;
         }).collect(Collectors.toList());
@@ -42,7 +48,11 @@ public class RecipeEndpoint {
         GetRecipeResponse dto = new GetRecipeResponse();
         dto.setId(recipe.getId());
         dto.setName(recipe.getName());
-        dto.setCost(recipe.getCost());
+        BigDecimal cost = BigDecimal.valueOf(0);
+        for(RecipeIngredient recipeIngredient : recipe.getRecipeIngredient()) {
+            cost = cost.add(recipeIngredient.getIngredient().getMarketprice().multiply(BigDecimal.valueOf(recipeIngredient.getAmount())));
+        }
+        dto.setCost(cost);
         dto.setSaleprice(recipe.getSaleprice());
 
         return dto;
