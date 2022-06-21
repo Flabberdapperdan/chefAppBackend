@@ -75,6 +75,21 @@ public class RecipeIngredientEndpoint {
     	return true;
     }
 
+    @PutMapping("{id}")
+    public boolean updateRecipeIngredient(@PathVariable long id, @RequestBody CreateRecipeIngredientRequest dto) {
+        Optional<RecipeIngredient> optionalOldRecipeIngredient = recipeIngredientService.read(id);
+        if (optionalOldRecipeIngredient.isPresent()) {
+            RecipeIngredient oldRecipeIngredient = optionalOldRecipeIngredient.get();
+            // Properties updaten
+            oldRecipeIngredient.setAmount(dto.getAmount());
+            // Send to service layer
+            recipeIngredientService.update(oldRecipeIngredient);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @DeleteMapping("{id}")
     public boolean deleteRecipeIngredientById(@PathVariable long id) {
         Optional<RecipeIngredient> optionalRecipeIngredient = recipeIngredientService.read(id);
